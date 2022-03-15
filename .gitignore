@@ -1,1 +1,7 @@
 /providers
+/main.go
+/resources/
+/http/
+/config/
+.idea
+.DS_Store

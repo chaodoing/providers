@@ -1,0 +1,42 @@
+{
+	"app": {
+		"host": "127.0.0.1",
+		"port": 8080,
+		"allowed_cross": false
+	},
+	"log": {
+		"console": true,
+		"on_save": false,
+		"level": "info",
+		"db": true,
+		"db_level": "info",
+		"db_file": "${DIR}/log/mysql.log",
+		"iris_file": "${DIR}/log/app.log",
+		"err_file": "${DIR}/log/error.log"
+	},
+	"database": {
+		"drive": "mysql",
+		"host": "127.0.0.1",
+		"port": 3306,
+		"dbname": "airport",
+		"username": "root",
+		"password": "123.com",
+		"charset": "utf8mb4"
+	},
+	"redis": {
+		"host": "127.0.0.1",
+		"port": 6379,
+		"auth": "",
+		"db_index": 0,
+		"expire": 0
+	},
+	"asset_bundle": {
+		"template": "${DIR}/resources/template/",
+		"favicon": "${DIR}/resources/template/favicon.ico",
+		"static_uri": "/static",
+		"static": "${DIR}/resources/template/static",
+		"upload_uri": "/upload",
+		"upload": "${DIR}/resources/upload",
+		"upload_maximum": 20
+	}
+}

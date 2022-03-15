@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+    <!-- 站点配置 -->
+    <app>
+        <!-- 监听主机 -->
+        <host>127.0.0.1</host>
+        <!-- 监听端口 -->
+        <port>8080</port>
+        <!-- 允许跨域 -->
+        <allowed-cross>false</allowed-cross>
+    </app>
+    <!-- 日志配置 -->
+    <log>
+        <!-- 控制台输出 -->
+        <console>true</console>
+        <!-- 生成日志文件 -->
+        <on-save>false</on-save>
+        <!-- 日志等级 -->
+        <!-- disable fatal error warn info debug  -->
+        <level>info</level>
+        <!-- 数据库日志 -->
+        <db>true</db>
+        <!-- silent error warn info -->
+        <db-level>info</db-level>
+        <!-- 数据库日志 -->
+        <db-file>${DIR}/log/mysql.log</db-file>
+        <!-- 框架日志 -->
+        <iris-file>${DIR}/log/app.log</iris-file>
+        <!-- 错误日志 -->
+        <err-file>${DIR}/log/error.log</err-file>
+    </log>
+    <database>
+        <!-- 数据库驱动 -->
+        <drive>mysql</drive>
+        <!-- 数据库主机 -->
+        <host>127.0.0.1</host>
+        <!-- 数据库端口 -->
+        <port>3306</port>
+        <!-- 数据库名称 -->
+        <dbname>airport</dbname>
+        <!-- 数据库用户名 -->
+        <username>root</username>
+        <!-- 数据库连接密码 -->
+        <password>123.com</password>
+        <!-- 数据库字符集 -->
+        <charset>utf8mb4</charset>
+    </database>
+    <!-- redis -->
+    <redis>
+        <!-- 连接主机 -->
+        <host>127.0.0.1</host>
+        <!-- 连接端口 -->
+        <port>6379</port>
+        <!-- 连接密码 -->
+        <auth></auth>
+        <!-- 选择的数据库 -->
+        <db-index>0</db-index>
+        <!-- 过期时间 -->
+        <expire>0</expire>
+    </redis>
+    <!-- 静态文件配值 -->
+    <asset-bundle>
+        <!-- 模板目录 -->
+        <template>${DIR}/resources/template/</template>
+        <!-- 网站图标 -->
+        <favicon>${DIR}/resources/template/favicon.ico</favicon>
+        <!-- 静态目录访问地址 -->
+        <static-uri>/static</static-uri>
+        <!-- 静态目录实际地址 -->
+        <static>${DIR}/resources/template/static</static>
+        <!-- 上传目录访问地址 -->
+        <upload-uri>/upload</upload-uri>
+        <!-- 上传目录实际地址 -->
+        <upload>${DIR}/resources/upload</upload>
+        <!-- 上传文件大小 单位: MB -->
+        <upload-maximum>20</upload-maximum>
+    </asset-bundle>
+</root>
