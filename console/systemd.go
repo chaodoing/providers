@@ -7,7 +7,7 @@ import (
 	`github.com/gookit/goutil/fsutil`
 	`github.com/urfave/cli`
 	
-	`providers/assets`
+	`github.com/chaodoing/providers/assets`
 )
 var (
 	dir string
