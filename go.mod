@@ -13,7 +13,9 @@ require (
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/gookit/filter v1.1.2 // indirect
 	github.com/gookit/goutil v0.4.4 // indirect
+	github.com/gookit/validate v1.3.1 // indirect
 	github.com/hashicorp/go-version v1.2.0 // indirect
 	github.com/iris-contrib/blackfriday v2.0.0+incompatible // indirect
 	github.com/iris-contrib/jade v1.1.3 // indirect
