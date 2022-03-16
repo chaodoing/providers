@@ -33,7 +33,7 @@ type (
 
 
 func jsonView(data interface{}) (string, error) {
-	html, _ := assets.Asset("template/jsonView.html")
+	html, _ := assets.Asset("template/json.html")
 	tpl, err := template.New("jsonView").Parse(string(html))
 	if err != nil {
 		return "", err
