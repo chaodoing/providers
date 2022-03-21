@@ -22,11 +22,13 @@ func ReadXML(file string, data interface{}) (err error) {
 
 // SaveXML 存储XML文件
 func SaveXML(data interface{}, file string) error {
-	xmlByte, err := xml.MarshalIndent(data, "","\t")
+	xmlByte, err := xml.MarshalIndent(data, "", "\t")
 	if err != nil {
 		return err
 	}
-	if err := ioutil.WriteFile(os.ExpandEnv(file), xmlByte, 0666); err != nil {
+	headerBytes := []byte(xml.Header)
+	xmlData := append(headerBytes, xmlByte...)
+	if err := ioutil.WriteFile(os.ExpandEnv(file), xmlData, 0666); err != nil {
 		return err
 	}
 	return nil

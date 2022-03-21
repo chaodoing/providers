@@ -12,6 +12,12 @@ import (
 	`github.com/go-redis/redis`
 	`github.com/lestrrat-go/strftime`
 	`github.com/natefinch/lumberjack`
+	`github.com/silenceper/wechat/v2`
+	`github.com/silenceper/wechat/v2/cache`
+	`github.com/silenceper/wechat/v2/miniprogram`
+	`github.com/silenceper/wechat/v2/miniprogram/config`
+	`github.com/silenceper/wechat/v2/officialaccount`
+	offConfig `github.com/silenceper/wechat/v2/officialaccount/config`
 	`gorm.io/driver/mysql`
 	`gorm.io/gorm`
 	`gorm.io/gorm/logger`
@@ -65,10 +71,10 @@ func (c *Container) Mysql() (db *gorm.DB, err error) {
 	_, schema := c.Config.dialect()
 	
 	var (
-		log *lumberjack.Logger
+		log      *lumberjack.Logger
 		Colorful bool
-		logx logger.Interface
-		out io.Writer
+		logx     logger.Interface
+		out      io.Writer
 	)
 	
 	log, err = c.Logger(c.Get().Log.DbFile)
@@ -106,6 +112,43 @@ func (c *Container) Authorized() *Authorized {
 	return &Authorized{
 		rdx: c.rdx,
 	}
+}
+
+// GetWechat 获取微信实例
+func (c *Container) GetWechat() (chart *wechat.Wechat, Cache cache.Cache) {
+	chart = wechat.NewWechat()
+	Cache = cache.NewRedis(&cache.RedisOpts{
+		Host:        fmt.Sprintf("%s:%d", c.Config.Redis.Host, c.Config.Redis.Port),
+		Password:    c.Config.Redis.Auth,
+		Database:    0,
+		MaxIdle:     10,
+		MaxActive:   10,
+		IdleTimeout: 60,
+	})
+	return
+}
+
+// GetOfficialAccount 获取微信公众号实例
+func (c *Container) GetOfficialAccount() *officialaccount.OfficialAccount {
+	chart, Cache := c.GetWechat()
+	return chart.GetOfficialAccount(&offConfig.Config{
+		AppID:          c.Config.Wechat.OfficialAccount.AppID,
+		AppSecret:      c.Config.Wechat.OfficialAccount.AppSecret,
+		Token:          c.Config.Wechat.OfficialAccount.Token,
+		EncodingAESKey: c.Config.Wechat.OfficialAccount.EncodingAESKey,
+		Cache:          Cache,
+	})
+}
+
+// GetMiniProgram 获取微信小程序实例
+func (c *Container) GetMiniProgram() (program *miniprogram.MiniProgram) {
+	chart, Cache := c.GetWechat()
+	program = chart.GetMiniProgram(&config.Config{
+		AppID:     c.Config.Wechat.MiniProgram.AppID,
+		AppSecret: c.Config.Wechat.MiniProgram.AppSecret,
+		Cache:     Cache,
+	})
+	return
 }
 
 // Get 获取配置文件

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<root>
+<?xml version="1.0" encoding="UTF-8"?>
+<root version="1.0.0">
     <!-- 站点配置 -->
     <app>
         <!-- 监听主机 -->
@@ -9,6 +9,20 @@
         <!-- 允许跨域 -->
         <allowed-cross>false</allowed-cross>
     </app>
+    <wechat>
+        <!-- 微信配置 -->
+        <mini-program>
+            <!-- 小程序配置 -->
+            <app-id>wx5c80efdd9f6520ad</app-id>
+            <app-secret>e32c464f28fe4fd6692ba2d4869760fa</app-secret>
+        </mini-program>
+        <official-account>
+            <app-id></app-id>
+            <app-secret></app-secret>
+            <token></token>
+            <encoding-aes-key></encoding-aes-key>
+        </official-account>
+    </wechat>
     <!-- 日志配置 -->
     <log>
         <!-- 控制台输出 -->

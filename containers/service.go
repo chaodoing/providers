@@ -43,7 +43,7 @@ func Service(container *Container, Driver RouteDriver) {
 	if strings.EqualFold(os.Getenv("ENVIRONMENT"), "release") {
 		DisableStartupLog = true
 	}
-	if container.Config.App.AllowedCross {
+	if container.Get().App.AllowedCross {
 		app.AllowMethods(iris.MethodOptions)
 		app.UseGlobal(middleware.AllowedCrossDomain)
 	}

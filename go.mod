@@ -8,11 +8,14 @@ require (
 	github.com/CloudyKit/jet/v3 v3.0.0 // indirect
 	github.com/Shopify/goreferrer v0.0.0-20181106222321-ec9c9a553398 // indirect
 	github.com/aymerick/raymond v2.0.3-0.20180322193309-b565731e1464+incompatible // indirect
+	github.com/beevik/etree v1.1.0 // indirect
+	github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d // indirect
 	github.com/eknkc/amber v0.0.0-20171010120322-cdade1c07385 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/gomodule/redigo v1.8.5 // indirect
 	github.com/gookit/filter v1.1.2 // indirect
 	github.com/gookit/goutil v0.4.4 // indirect
 	github.com/gookit/validate v1.3.1 // indirect
@@ -40,6 +43,9 @@ require (
 	github.com/ryanuber/columnize v2.1.0+incompatible // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
+	github.com/silenceper/wechat/v2 v2.1.2 // indirect
+	github.com/sirupsen/logrus v1.8.1 // indirect
+	github.com/spf13/cast v1.3.1 // indirect
 	github.com/urfave/cli v1.22.5 // indirect
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect

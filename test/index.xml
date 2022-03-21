@@ -1,64 +1,55 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<root>
-	<!-- 站点配置 -->
+<?xml version="1.0" encoding="UTF-8"?>
+<root version="v1.0.0">
 	<app>
-		<!-- 监听主机 -->
-		<host>127.0.0.1</host>
-		<!-- 监听端口 -->
-		<port>8080</port>
-		<!-- 允许跨域 -->
+		<host></host>
+		<port></port>
 		<allowed-cross>false</allowed-cross>
 	</app>
-	<!-- 日志配置 -->
+	<wechat>
+		<mini-program>
+			<app-id></app-id>
+			<app-secret></app-secret>
+		</mini-program>
+		<official-account>
+			<app-id></app-id>
+			<app-secret></app-secret>
+			<token></token>
+			<encoding-aes-key></encoding-aes-key>
+		</official-account>
+	</wechat>
 	<log>
-		<!-- 控制台输出 -->
-		<console>true</console>
-		<!-- 生成日志文件 -->
+		<console>false</console>
 		<on-save>false</on-save>
-		<!-- 日志等级 -->
-		<!-- disable fatal error warn info debug  -->
-		<level>info</level>
-		<!-- 数据库日志 -->
-		<db>true</db>
-		<!-- silent error warn info -->
-		<db-level>info</db-level>
-		<!-- 数据库日志 -->
-		<db-file>${DIR}/log/mysql.log</db-file>
-		<!-- 框架日志 -->
-		<iris-file>${DIR}/log/app.log</iris-file>
-		<!-- 错误日志 -->
-		<err-file>${DIR}/log/error.log</err-file>
+		<level></level>
+		<db>false</db>
+		<db-level></db-level>
+		<db-file></db-file>
+		<iris-file></iris-file>
+		<err-file></err-file>
 	</log>
 	<database>
-		<!-- 数据库驱动 -->
-		<drive>mysql</drive>
-		<!-- 数据库主机 -->
-		<host>127.0.0.1</host>
-		<!-- 数据库端口 -->
-		<port>3306</port>
-		<!-- 数据库名称 -->
-		<dbname>airport</dbname>
-		<!-- 数据库用户名 -->
-		<username>root</username>
-		<!-- 数据库连接密码 -->
-		<password>123.com</password>
-		<!-- 数据库字符集 -->
-		<charset>utf8mb4</charset>
+		<drive></drive>
+		<host></host>
+		<port>0</port>
+		<dbname></dbname>
+		<username></username>
+		<password></password>
+		<charset></charset>
 	</database>
 	<redis>
-		<host>127.0.0.1</host>
-		<port>6379</port>
+		<host></host>
+		<port>0</port>
 		<auth></auth>
 		<db-index>0</db-index>
 		<expire>0</expire>
 	</redis>
 	<asset-bundle>
-		<template>${DIR}/resources/template/</template>
-		<favicon>${DIR}/resources/template/favicon.ico</favicon>
-		<static-uri>/static</static-uri>
-		<static>${DIR}/resources/template/static</static>
-		<upload-uri>/upload</upload-uri>
-		<upload>${DIR}/resources/upload</upload>
-		<upload-maximum>20</upload-maximum>
+		<template></template>
+		<favicon></favicon>
+		<static-uri></static-uri>
+		<static></static>
+		<upload-uri></upload-uri>
+		<upload></upload>
+		<upload-maximum>0</upload-maximum>
 	</asset-bundle>
 </root>

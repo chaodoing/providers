@@ -3,8 +3,8 @@ package test
 import (
 	`testing`
 	
-	`providers/containers`
-	`providers/util`
+	`github.com/chaodoing/providers/containers`
+	`github.com/chaodoing/providers/util`
 )
 
 func TestSaveJSON(t *testing.T) {

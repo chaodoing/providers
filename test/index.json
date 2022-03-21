@@ -1,42 +1,54 @@
 {
 	"app": {
-		"host": "127.0.0.1",
-		"port": 8080,
+		"host": "",
+		"port": "",
 		"allowed_cross": false
 	},
+	"wechat": {
+		"mini_program": {
+			"app_id": "",
+			"app_secret": ""
+		},
+		"official_account": {
+			"app_id": "",
+			"app_secret": "",
+			"token": "",
+			"encoding_aes_key": ""
+		}
+	},
 	"log": {
-		"console": true,
+		"console": false,
 		"on_save": false,
-		"level": "info",
-		"db": true,
-		"db_level": "info",
-		"db_file": "${DIR}/log/mysql.log",
-		"iris_file": "${DIR}/log/app.log",
-		"err_file": "${DIR}/log/error.log"
+		"level": "",
+		"db": false,
+		"db_level": "",
+		"db_file": "",
+		"iris_file": "",
+		"err_file": ""
 	},
 	"database": {
-		"drive": "mysql",
-		"host": "127.0.0.1",
-		"port": 3306,
-		"dbname": "airport",
-		"username": "root",
-		"password": "123.com",
-		"charset": "utf8mb4"
+		"drive": "",
+		"host": "",
+		"port": 0,
+		"dbname": "",
+		"username": "",
+		"password": "",
+		"charset": ""
 	},
 	"redis": {
-		"host": "127.0.0.1",
-		"port": 6379,
+		"host": "",
+		"port": 0,
 		"auth": "",
 		"db_index": 0,
 		"expire": 0
 	},
 	"asset_bundle": {
-		"template": "${DIR}/resources/template/",
-		"favicon": "${DIR}/resources/template/favicon.ico",
-		"static_uri": "/static",
-		"static": "${DIR}/resources/template/static",
-		"upload_uri": "/upload",
-		"upload": "${DIR}/resources/upload",
-		"upload_maximum": 20
+		"template": "",
+		"favicon": "",
+		"static_uri": "",
+		"static": "",
+		"upload_uri": "",
+		"upload": "",
+		"upload_maximum": 0
 	}
 }
