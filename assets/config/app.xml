@@ -1,92 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root version="1.0.0">
-    <!-- 站点配置 -->
-    <app>
-        <!-- 监听主机 -->
-        <host>127.0.0.1</host>
-        <!-- 监听端口 -->
-        <port>8080</port>
-        <!-- 允许跨域 -->
-        <allowed-cross>false</allowed-cross>
+<root location="./config/app.xml" version="v1.0.0">
+    <app explain="站点配置">
+        <host explain="监听主机">0.0.0.0</host>
+        <port explain="监听端口">8080</port>
+        <allowed-cross explain="允许跨域">false</allowed-cross>
     </app>
-    <wechat>
-        <!-- 微信配置 -->
-        <mini-program>
-            <!-- 小程序配置 -->
-            <app-id>wx5c80efdd9f6520ad</app-id>
-            <app-secret>e32c464f28fe4fd6692ba2d4869760fa</app-secret>
+    <wechat explain="微信配置">
+        <mini-program explain="小程序配置">
+            <app-id explain="小程序ID">wx5c80efdd9f6520ad</app-id>
+            <app-secret explain="小程序密钥">e32c464f28fe4fd6692ba2d4869760fa</app-secret>
         </mini-program>
-        <official-account>
-            <app-id></app-id>
-            <app-secret></app-secret>
-            <token></token>
-            <encoding-aes-key></encoding-aes-key>
+        <official-account explain="公众号配置">
+            <app-id explain="公众号ID"/>
+            <app-secret explain="公众号密钥"/>
+            <token/>
+            <encoding-aes-key explain="开启AES加密"/>
         </official-account>
     </wechat>
-    <!-- 日志配置 -->
-    <log>
-        <!-- 控制台输出 -->
-        <console>true</console>
-        <!-- 生成日志文件 -->
-        <on-save>false</on-save>
-        <!-- 日志等级 -->
-        <!-- disable fatal error warn info debug  -->
-        <level>info</level>
-        <!-- 数据库日志 -->
-        <db>true</db>
-        <!-- silent error warn info -->
-        <db-level>info</db-level>
-        <!-- 数据库日志 -->
-        <db-file>${DIR}/log/mysql.log</db-file>
-        <!-- 框架日志 -->
-        <iris-file>${DIR}/log/app.log</iris-file>
-        <!-- 错误日志 -->
-        <err-file>${DIR}/log/error.log</err-file>
+    <log explain="日志配置">
+        <output-to-console explain="控制台输出">false</output-to-console>
+        <save-to-file explain="是否保存到日志文件">false</save-to-file>
+        <iris-level explain="iris日志等级" value="disable fatal error warn info debug">debug</iris-level>
+        <gorm-on explain="开启数据库日志">false</gorm-on>
+        <gorm-level explain="数据库日志等级" value="silent error warn info">info</gorm-level>
+        <db-file explain="数据库日志存储位置">${DIR}/log/mysql.log</db-file>
+        <iris-file explain="iris框架日志存储位置">${DIR}/log/app.log</iris-file>
+        <err-file explain="错误日志存储位置">${DIR}/log/error.log</err-file>
     </log>
-    <database>
-        <!-- 数据库驱动 -->
-        <drive>mysql</drive>
-        <!-- 数据库主机 -->
-        <host>127.0.0.1</host>
-        <!-- 数据库端口 -->
-        <port>3306</port>
-        <!-- 数据库名称 -->
-        <dbname>airport</dbname>
-        <!-- 数据库用户名 -->
-        <username>root</username>
-        <!-- 数据库连接密码 -->
-        <password>123.com</password>
-        <!-- 数据库字符集 -->
-        <charset>utf8mb4</charset>
+    <database explain="数据库连接配置">
+        <drive explain="数据库驱动只支持MYSQL" value="mysql">mysql</drive>
+        <host explain="数据库主机">127.0.0.1</host>
+        <port explain="数据库端口">3306</port>
+        <dbname explain="数据库名称">DbName</dbname>
+        <username explain="数据库用户名">root</username>
+        <password explain="数据库连接密码">123.com</password>
+        <charset explain="数据库字符集">utf8mb4</charset>
     </database>
-    <!-- redis -->
-    <redis>
-        <!-- 连接主机 -->
-        <host>127.0.0.1</host>
-        <!-- 连接端口 -->
-        <port>6379</port>
-        <!-- 连接密码 -->
-        <auth></auth>
-        <!-- 选择的数据库 -->
-        <db-index>0</db-index>
-        <!-- 过期时间 -->
-        <expire>0</expire>
+    <redis explain="redis连接配置">
+        <host explain="连接主机">127.0.0.1</host>
+        <port explain="连接端口">6379</port>
+        <auth explain="连接认证密码"/>
+        <index explain="存储数据库位置" value="0~15">0</index>
+        <expire explain="redis存储的默认TTL" value="0:永不过期">0</expire>
     </redis>
-    <!-- 静态文件配值 -->
-    <asset-bundle>
-        <!-- 模板目录 -->
-        <template>${DIR}/resources/template/</template>
-        <!-- 网站图标 -->
-        <favicon>${DIR}/resources/template/favicon.ico</favicon>
-        <!-- 静态目录访问地址 -->
-        <static-uri>/static</static-uri>
-        <!-- 静态目录实际地址 -->
-        <static>${DIR}/resources/template/static</static>
-        <!-- 上传目录访问地址 -->
-        <upload-uri>/upload</upload-uri>
-        <!-- 上传目录实际地址 -->
-        <upload>${DIR}/resources/upload</upload>
-        <!-- 上传文件大小 单位: MB -->
-        <upload-maximum>20</upload-maximum>
+    <asset-bundle explain="静态文件配值">
+        <template explain="模板目录">${DIR}/resources/template/</template>
+        <favicon explain="网站图标">${DIR}/resources/template/favicon.ico</favicon>
+        <static-uri explain="静态目录访问地址">/static</static-uri>
+        <static explain="静态目录实际地址">${DIR}/resources/template/static</static>
+        <upload-uri explain="上传目录访问地址">/upload</upload-uri>
+        <upload explain="上传目录实际地址">${DIR}/resources/upload</upload>
+        <upload-maximum explain="上传文件大小 单位: MB">20</upload-maximum>
     </asset-bundle>
 </root>

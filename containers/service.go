@@ -28,17 +28,17 @@ func Service(container *Container, Driver RouteDriver) {
 		return
 	}
 	hero.Register(container)
-	if container.Get().Log.Console && container.Get().Log.OnSave {
+	if container.Get().Log.OutputToConsole && container.Get().Log.OutputToConsole {
 		app.Logger().SetOutput(logger)
 		app.Logger().AddOutput(os.Stdout)
 	}
-	if !container.Get().Log.Console && container.Get().Log.OnSave {
+	if !container.Get().Log.OutputToConsole && container.Get().Log.SaveToFile {
 		app.Logger().SetOutput(logger)
 	}
-	if container.Get().Log.Console && !container.Get().Log.OnSave {
+	if container.Get().Log.OutputToConsole && !container.Get().Log.SaveToFile {
 		app.Logger().SetOutput(os.Stdout)
 	}
-	app.Logger().SetLevel(irisLevel(container.Get().Log.Level))
+	app.Logger().SetLevel(irisLevel(container.Get().Log.IrisLevel))
 	
 	if strings.EqualFold(os.Getenv("ENVIRONMENT"), "release") {
 		DisableStartupLog = true

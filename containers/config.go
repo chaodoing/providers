@@ -11,8 +11,8 @@ import (
 // Config 配置文件
 type Config struct {
 	XMLName  xml.Name `json:"-" xml:"root"`
-	Location string   `json:"-" xml:"-" name:"本地存储位置"`
-	Version  string  `json:"-" xml:"version,attr"`
+	Location string   `json:"-" xml:"location,attr" name:"本地存储位置"`
+	Version  string   `json:"-" xml:"version,attr"`
 	App      struct {
 		Host         string `json:"host" xml:"host" name:"监听主机"`
 		Port         string `json:"port" xml:"port" name:"监听端口"`
@@ -33,14 +33,14 @@ type Config struct {
 	} `json:"wechat" xml:"wechat" name:"微信数据配置"`
 	
 	Log struct {
-		Console  bool   `json:"console" xml:"console" name:"日志是否开启"`
-		OnSave   bool   `json:"on_save" xml:"on-save" name:"是否存储日志"`
-		Level    string `json:"level" xml:"level" name:"iris日志等级"`
-		Db       bool   `json:"db" xml:"db" name:"数据库日志是否开启"`
-		DbLevel  string `json:"db_level" xml:"db-level" name:"数据库日志文件等级"`
-		DbFile   string `json:"db_file" xml:"db-file" name:"数据库日志文件"`
-		IrisFile string `json:"iris_file" xml:"iris-file" name:"iris框架文件位置"`
-		ErrFile  string `json:"err_file" xml:"err-file" name:"日志错误文件配置"`
+		OutputToConsole bool   `json:"output_to_console" xml:"output-to-console" name:"日志是否输出到控制台"`
+		SaveToFile      bool   `json:"save_to_file" xml:"save-to-file" name:"是否存储日志"`
+		IrisLevel       string `json:"iris_level" xml:"iris-level" name:"iris日志等级"`
+		GormOn          bool   `json:"gorm_on" xml:"gorm-on" name:"数据库日志是否开启"`
+		GormLevel       string `json:"gorm_level" xml:"gorm-level" name:"数据库日志文件等级"`
+		DbFile          string `json:"db_file" xml:"db-file" name:"数据库日志文件"`
+		IrisFile        string `json:"iris_file" xml:"iris-file" name:"iris框架文件位置"`
+		ErrFile         string `json:"err_file" xml:"err-file" name:"日志错误文件配置"`
 	} `json:"log" xml:"log" name:"日志配置"`
 	
 	Database struct {
@@ -54,13 +54,12 @@ type Config struct {
 	} `json:"database" xml:"database" name:"数据库配置"`
 	
 	Redis struct {
-		Host    string `json:"host" xml:"host" name:"连接主机"`
-		Port    uint32 `json:"port" xml:"port" name:"连接端口"`
-		Auth    string `json:"auth" xml:"auth" name:"认证密码"`
-		DbIndex uint8  `json:"db_index" xml:"db-index" name:"数据库索引"`
-		Expire  uint   `json:"expire" xml:"expire" name:"redis存储TTL"`
+		Host   string `json:"host" xml:"host" name:"连接主机"`
+		Port   uint32 `json:"port" xml:"port" name:"连接端口"`
+		Auth   string `json:"auth" xml:"auth" name:"认证密码"`
+		Index  uint8  `json:"index" xml:"index" name:"数据库索引"`
+		Expire uint   `json:"expire" xml:"expire" name:"redis存储TTL"`
 	} `json:"redis" xml:"redis" name:"redis配置"`
-	
 	AssetBundle struct {
 		Template      string `json:"template" xml:"template" name:"模板目录"`
 		Favicon       string `json:"favicon" xml:"favicon" name:"网站图标"`
@@ -82,7 +81,6 @@ func (c Config) dialect() (dialect, schema string) {
 	return
 }
 
-
 func ReadJSONConfig(file string) (data Config, err error) {
 	var content []byte
 	content, err = os.ReadFile(os.ExpandEnv(file))
@@ -94,6 +92,7 @@ func ReadJSONConfig(file string) (data Config, err error) {
 		return
 	}
 	data.Version = os.Getenv("VERSION")
+	data.Location = os.ExpandEnv(file)
 	return
 }
 func ReadXMLConfig(file string) (data Config, err error) {
@@ -107,5 +106,6 @@ func ReadXMLConfig(file string) (data Config, err error) {
 		return
 	}
 	data.Version = os.Getenv("VERSION")
+	data.Location = os.ExpandEnv(file)
 	return
 }
