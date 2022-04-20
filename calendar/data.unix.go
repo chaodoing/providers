@@ -1,8 +1,11 @@
 package calendar
 
 import (
-	`time`
+	"time"
 )
+
+// Unix 时间戳转换
+type Unix int64
 
 func (e Unix) MarshalText() ([]byte, error) {
 	if e != 0 {
