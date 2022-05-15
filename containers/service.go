@@ -21,13 +21,15 @@ func Service(container *Container, Driver RouteDriver) {
 		err               error
 		DisableStartupLog bool
 		logger            *lumberjack.Logger
+		dim               *hero.Hero
 	)
 	logger, err = container.Logger(container.Get().Log.IrisFile)
 	if err != nil {
 		panic(err)
 		return
 	}
-	hero.Register(container)
+	dim = hero.New()
+	dim.Register(container)
 	if container.Get().Log.OutputToConsole && container.Get().Log.OutputToConsole {
 		app.Logger().SetOutput(logger)
 		app.Logger().AddOutput(os.Stdout)
@@ -70,7 +72,7 @@ func Service(container *Container, Driver RouteDriver) {
 			app.HandleDir(container.Config.AssetBundle.UploadUri, os.ExpandEnv(container.Config.AssetBundle.Upload))
 		}
 	}
-	Driver(app)
+	Driver(app, container, dim)
 	app.Configure(iris.WithConfiguration(iris.Configuration{
 		PostMaxMemory:       int64(container.Config.AssetBundle.UploadMaximum) << 20,
 		TimeFormat:          "2006-01-02 15:04:05",

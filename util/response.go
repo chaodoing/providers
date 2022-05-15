@@ -73,7 +73,8 @@ func O(ctx iris.Context, status uint16, message string, datum interface{}) {
 	}
 	html, _ := jsonView(data)
 	ctx.Gzip(true)
-	ctx.Negotiation().JSON(data).XML(data).HTML(html).EncodingGzip()
+	
+	ctx.Negotiation().EncodingGzip().JSON(data).XML(data).HTML(html)
 	if _, err := ctx.Negotiate(nil); err != nil {
 		ctx.Application().Logger().Error(err)
 	}
