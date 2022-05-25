@@ -28,18 +28,18 @@ func NewGormLog(writer gormlogger.Writer, config gormlogger.Config) gormlogger.I
 		infoStr      = "%s[INFO] "
 		warnStr      = "%s[WARN] "
 		errStr       = "%s[ERROR] "
-		traceStr     = "%s [用时: %.3fms] [rows:%v]\n\t[sql] %s"
-		traceWarnStr = "%s %s [用时: %.3fms] [rows:%v]\n\t[sql] %s"
-		traceErrStr  = "%s %s [用时: %.3fms] [rows:%v]\n\t[sql] %s"
+		traceStr     = "%s [用时: %.3fms] [rows:%v]\n[sql] %s"
+		traceWarnStr = "%s %s [用时: %.3fms] [rows:%v]\n[sql] %s"
+		traceErrStr  = "%s %s [用时: %.3fms] [rows:%v]\n[sql] %s"
 	)
 	
 	if config.Colorful {
 		infoStr = gormlogger.Green + "%s" + gormlogger.Reset + gormlogger.Green + " [INFO] " + gormlogger.Reset
 		warnStr = gormlogger.BlueBold + "%s" + gormlogger.Reset + gormlogger.Magenta + " [WARN] " + gormlogger.Reset
 		errStr = gormlogger.Magenta + "%s" + gormlogger.Reset + gormlogger.Red + " [ERROR] " + gormlogger.Reset
-		traceStr = gormlogger.Green + "%s" + gormlogger.Reset + gormlogger.Yellow + " [用时: %.3fms] " + gormlogger.BlueBold + " [rows:%v]" + "\t[sql] " + gormlogger.MagentaBold + " %s" + gormlogger.Reset
-		traceWarnStr = gormlogger.Green + "%s " + gormlogger.Yellow + "%s" + gormlogger.Reset + gormlogger.RedBold + " [用时: %.3fms] " + gormlogger.Yellow + " [rows:%v]" + gormlogger.Magenta + " \n\t[sql] %s" + gormlogger.Reset
-		traceErrStr = gormlogger.RedBold + "%s " + gormlogger.MagentaBold + "%s" + gormlogger.Reset + gormlogger.Yellow + "[用时: %.3fms] " + gormlogger.BlueBold + " [rows:%v]" + gormlogger.Reset + "\n\t[sql] %s"
+		traceStr = gormlogger.Green + "%s" + gormlogger.Reset + gormlogger.Yellow + " [用时: %.3fms] " + gormlogger.BlueBold + " [rows:%v]" + "\n[sql] " + gormlogger.MagentaBold + " %s" + gormlogger.Reset
+		traceWarnStr = gormlogger.Green + "%s " + gormlogger.Yellow + "%s" + gormlogger.Reset + gormlogger.RedBold + " [用时: %.3fms] " + gormlogger.Yellow + " [rows:%v]" + gormlogger.Magenta + " \n[sql] %s" + gormlogger.Reset
+		traceErrStr = gormlogger.RedBold + "%s " + gormlogger.MagentaBold + "%s" + gormlogger.Reset + gormlogger.Yellow + "[用时: %.3fms] " + gormlogger.BlueBold + " [rows:%v]" + gormlogger.Reset + "\n[sql] %s"
 	}
 	
 	return &mgromlogger{
