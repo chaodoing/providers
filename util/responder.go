@@ -3,6 +3,7 @@ package util
 import (
 	`bytes`
 	`encoding/json`
+	`encoding/xml`
 	`html/template`
 	
 	`github.com/kataras/iris/v12`
@@ -11,8 +12,14 @@ import (
 )
 
 type Respond struct {
-	ctx  iris.Context
-	data map[string]interface{}
+	ctx     iris.Context
+	data    interface{}
+	Default struct {
+		XMLName xml.Name    `xml:"root" json:"-"`
+		Status  uint16      `json:"error_code" xml:"error_code"` // Status 状态错误代码
+		Message string      `json:"message" xml:"message"`       // Message 错误消息
+		Data    interface{} `json:"data" xml:"data"`             // Data 数据内容
+	}
 }
 
 // Data 设置数据
@@ -41,12 +48,12 @@ func (r Respond) JsonView(data interface{}) (string, error) {
 
 // Send 发送数据到浏览器
 func (r Respond) Send() {
-	html, err := r.JsonView(r.data)
+	html, err := r.JsonView(r.Default)
 	if err != nil {
 		r.ctx.Application().Logger().Error(err)
 	}
 	r.ctx.Gzip(true)
-	r.ctx.Negotiation().JSON(r.data).XML(r.data).HTML(html).EncodingGzip()
+	r.ctx.Negotiation().JSON(r.Default).XML(r.Default).HTML(html).EncodingGzip()
 	if _, err := r.ctx.Negotiate(nil); err != nil {
 		r.ctx.Application().Logger().Error(err)
 	}
@@ -68,9 +75,9 @@ func (r Respond) SendData(data interface{}) {
 }
 
 func (r Respond) O(errorCode uint16, message string, data interface{}) {
-	r.data["error_code"] = errorCode
-	r.data["message"] = message
-	r.data["data"] = data
+	r.Default.Status = errorCode
+	r.Default.Message = message
+	r.Default.Data = data
 	r.Send()
 	return
 }
@@ -80,18 +87,18 @@ func (r Respond) Success(data interface{}, msg ...string) {
 	if len(msg) > 0 {
 		message = msg[0]
 	}
-	r.data["error_code"] = 0
-	r.data["message"] = message
-	r.data["data"] = data
+	r.Default.Status = 0
+	r.Default.Message = message
+	r.Default.Data = data
 	r.Send()
 	return
 }
 
 func (r Respond) Error(message string, data ...interface{}) {
-	r.data["error_code"] = 1
-	r.data["message"] = message
+	r.Default.Status = 1
+	r.Default.Message = message
 	if len(data) > 0 {
-		r.data["data"] = data[0]
+		r.Default.Data = data[0]
 	}
 	r.Send()
 	return
