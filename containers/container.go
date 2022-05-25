@@ -14,15 +14,15 @@ import (
 	`github.com/natefinch/lumberjack`
 	`gorm.io/driver/mysql`
 	`gorm.io/gorm`
-	`gorm.io/gorm/logger`
+	gromlogger `gorm.io/gorm/logger`
 )
 
 type Provides map[string]interface{}
 
 type Container struct {
-	Config Config
-	db     *gorm.DB
-	rdx    *redis.Client
+	Config   Config
+	db       *gorm.DB
+	rdx      *redis.Client
 	provides Provides
 }
 
@@ -56,7 +56,6 @@ func (c *Container) Logger(filename string) (data *lumberjack.Logger, err error)
 		LocalTime:  true,
 		Compress:   true,
 	}
-	
 	return
 }
 
@@ -70,7 +69,7 @@ func (c *Container) Mysql() (db *gorm.DB, err error) {
 	var (
 		log      *lumberjack.Logger
 		Colorful bool
-		logx     logger.Interface
+		logx     gromlogger.Interface
 		out      io.Writer
 	)
 	
@@ -87,12 +86,23 @@ func (c *Container) Mysql() (db *gorm.DB, err error) {
 	} else {
 		out = log
 	}
-	logx = logger.New(Logger.New(out, "\r\n", Logger.LstdFlags), logger.Config{
+	if strings.EqualFold(os.Getenv("ENVIRONMENT"), "") {
+		err := os.Setenv("ENVIRONMENT", "development")
+		if err != nil {
+			panic(err)
+		}
+	}
+	var flag = Logger.LstdFlags | Logger.Llongfile
+	if !strings.EqualFold(os.Getenv("ENVIRONMENT"), "development") {
+		flag = Logger.Ldate | Logger.Ltime
+	}
+	logx = NewGormLog(Logger.New(out, "[GORM] ", flag), gromlogger.Config{
 		SlowThreshold:             200 * time.Millisecond,
 		LogLevel:                  gormLevel(c.Get().Log.GormLevel),
 		IgnoreRecordNotFoundError: false,
 		Colorful:                  Colorful,
 	})
+	
 	c.db, err = gorm.Open(mysql.Open(schema), &gorm.Config{
 		DryRun:      false,
 		PrepareStmt: true,
@@ -110,12 +120,13 @@ func (c *Container) Authorized() *Authorized {
 		rdx: c.rdx,
 	}
 }
+
 // Provides 获取服务内容
 func (c *Container) Provides() Provides {
 	return c.provides
 }
 
-func (c *Container) AddProvide(key string, value interface{})  {
+func (c *Container) AddProvide(key string, value interface{}) {
 	c.provides[key] = value
 }
 

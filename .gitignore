@@ -3,5 +3,7 @@
 /resources/
 /http/
 /config/
+release/app.xml
+log/
 .idea
 .DS_Store

@@ -2,6 +2,7 @@ package containers
 
 import (
 	`fmt`
+	Logger `log`
 	`net/http`
 	`os`
 	`strings`
@@ -16,6 +17,11 @@ import (
 )
 
 func Service(container *Container, Driver RouteDriver) {
+	var flag = Logger.LstdFlags
+	if !strings.EqualFold(os.Getenv("ENVIRONMENT"), "development") || strings.EqualFold(os.Getenv("ENVIRONMENT"), "") {
+		flag = Logger.Ldate | Logger.Ltime
+	}
+	Logger.SetFlags(flag)
 	var (
 		app               = iris.Default()
 		err               error
@@ -34,6 +40,7 @@ func Service(container *Container, Driver RouteDriver) {
 		app.Logger().SetOutput(logger)
 		app.Logger().AddOutput(os.Stdout)
 	}
+	
 	if !container.Get().Log.OutputToConsole && container.Get().Log.SaveToFile {
 		app.Logger().SetOutput(logger)
 	}
