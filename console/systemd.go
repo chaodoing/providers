@@ -3,11 +3,11 @@ package console
 import (
 	"html/template"
 	"os"
-
+	
 	"github.com/gookit/goutil/fsutil"
 	"github.com/urfave/cli"
-
-	"virtualization/providers/assets"
+	
+	`github.com/chaodoing/providers/assets`
 )
 
 var (
