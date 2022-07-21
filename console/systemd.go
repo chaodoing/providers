@@ -1,17 +1,18 @@
 package console
 
 import (
-	`html/template`
-	`os`
-	
-	`github.com/gookit/goutil/fsutil`
-	`github.com/urfave/cli`
-	
-	`github.com/chaodoing/providers/assets`
+	"html/template"
+	"os"
+
+	"github.com/gookit/goutil/fsutil"
+	"github.com/urfave/cli"
+
+	"virtualization/providers/assets"
 )
+
 var (
-	dir string
-	exec string
+	dir    string
+	exec   string
 	config string
 )
 var Systemd = cli.Command{
@@ -20,7 +21,7 @@ var Systemd = cli.Command{
 	Usage:       "生成Linux服务脚本",
 	Description: "生成Linux [.service] 格式服务脚本",
 	Category:    "框架命令",
-	Flags:       []cli.Flag{
+	Flags: []cli.Flag{
 		cli.StringFlag{
 			Name:        "dir,d",
 			Usage:       "程序工作路径",
@@ -42,13 +43,13 @@ var Systemd = cli.Command{
 	},
 	Action: func(c *cli.Context) error {
 		var data = struct {
-			App string
-			Path string
+			App     string
+			Path    string
 			Execute string
 			Config  string
 		}{
-			App: os.Getenv("APP"),
-			Path: dir,
+			App:     os.Getenv("APP"),
+			Path:    dir,
 			Execute: exec,
 			Config:  config,
 		}

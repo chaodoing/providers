@@ -1,18 +1,18 @@
 package containers
 
 import (
-	`crypto/md5`
-	`encoding/base64`
-	`encoding/json`
-	`errors`
-	`fmt`
-	`math/rand`
-	`strconv`
-	`strings`
-	`time`
+	"crypto/md5"
+	"encoding/base64"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"math/rand"
+	"strconv"
+	"strings"
+	"time"
 	
-	`github.com/go-redis/redis`
-	`github.com/kataras/iris/v12`
+	"github.com/go-redis/redis"
+	"github.com/kataras/iris/v12"
 )
 
 const (
@@ -67,6 +67,25 @@ func (a *Authorized) Deposit(data interface{}) (err error) {
 	return
 }
 
+// Update 更新用户信息
+func (a *Authorized) Update(ctx iris.Context, data interface{}) (err error) {
+	var (
+		Authorization string
+		b             []byte
+	)
+	Authorization, err = a.authString(ctx)
+	if err != nil {
+		return
+	}
+	b, err = json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	key := Prefix + Authorization
+	_, err = a.rdx.Set(key, string(b), time.Duration(a.Expire*int64(time.Second))).Result()
+	return
+}
+
 // Auth 用户信息认证
 func (a *Authorized) Auth(ctx iris.Context, data interface{}) (err error) {
 	var Authorization string
@@ -96,6 +115,7 @@ func (a *Authorized) Auth(ctx iris.Context, data interface{}) (err error) {
 		}
 		a.Authorization = a.stalkString()
 		ctx.Header("Refresh-Token", a.Authorization)
+		ctx.Header("Authorization", a.Authorization)
 		ctx.Header("Refresh-Expires", fmt.Sprintf("%d", time.Now().Unix()+a.Expire))
 		index := Prefix + ":" + a.Authorization
 		if _, err = a.rdx.Set(index, a.Digest, time.Duration(a.Expire*int64(time.Second))).Result(); err != nil {
@@ -115,14 +135,14 @@ func (a *Authorized) stalkString() string {
 // authString 获取用户认证字符串
 func (a *Authorized) authString(ctx iris.Context) (string, error) {
 	if token := ctx.GetHeader("Accept-Token"); !strings.EqualFold(token, "") {
-		return token, nil
+		return strings.TrimPrefix(strings.TrimPrefix(token, Basic), Bearer), nil
 	}
 	if token := ctx.GetHeader("Authorization"); !strings.EqualFold(token, "") {
 		if token = strings.TrimPrefix(token, Basic); !strings.EqualFold(token, "") {
-			return token, nil
+			return strings.TrimPrefix(strings.TrimPrefix(token, Basic), Bearer), nil
 		}
 		if token = strings.TrimPrefix(token, Bearer); !strings.EqualFold(token, "") {
-			return token, nil
+			return strings.TrimPrefix(strings.TrimPrefix(token, Basic), Bearer), nil
 		}
 	}
 	return "", errors.New("找不到用户认证字符串")

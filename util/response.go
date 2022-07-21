@@ -1,17 +1,17 @@
 package util
 
 import (
-	`bytes`
-	`encoding/json`
-	`encoding/xml`
-	`html/template`
+	"bytes"
+	"encoding/json"
+	"encoding/xml"
+	"html/template"
 	
-	`github.com/kataras/iris/v12`
+	"github.com/kataras/iris/v12"
 	
 	`github.com/chaodoing/providers/assets`
 )
 
-type Respond struct {
+type Response struct {
 	ctx     iris.Context
 	data    interface{}
 	Default struct {
@@ -23,12 +23,12 @@ type Respond struct {
 }
 
 // Data 设置数据
-func (r Respond) Data(data map[string]interface{}) Respond {
+func (r Response) Data(data map[string]interface{}) Response {
 	r.data = data
 	return r
 }
 
-func (r Respond) JsonView(data interface{}) (string, error) {
+func (r Response) JsonView(data interface{}) (string, error) {
 	html, _ := assets.Asset("template/json.html")
 	tpl, err := template.New("jsonView").Parse(string(html))
 	if err != nil {
@@ -47,7 +47,7 @@ func (r Respond) JsonView(data interface{}) (string, error) {
 }
 
 // Send 发送数据到浏览器
-func (r Respond) Send() {
+func (r Response) Send() {
 	html, err := r.JsonView(r.Default)
 	if err != nil {
 		r.ctx.Application().Logger().Error(err)
@@ -61,7 +61,7 @@ func (r Respond) Send() {
 }
 
 // SendData 发送设置数据到浏览器
-func (r Respond) SendData(data interface{}) {
+func (r Response) SendData(data interface{}) {
 	html, err := r.JsonView(data)
 	if err != nil {
 		r.ctx.Application().Logger().Error(err)
@@ -74,7 +74,7 @@ func (r Respond) SendData(data interface{}) {
 	return
 }
 
-func (r Respond) O(errorCode uint16, message string, data interface{}) {
+func (r Response) O(errorCode uint16, message string, data interface{}) {
 	r.Default.Status = errorCode
 	r.Default.Message = message
 	r.Default.Data = data
@@ -82,7 +82,7 @@ func (r Respond) O(errorCode uint16, message string, data interface{}) {
 	return
 }
 
-func (r Respond) Success(data interface{}, msg ...string) {
+func (r Response) Success(data interface{}, msg ...string) {
 	var message = "OK"
 	if len(msg) > 0 {
 		message = msg[0]
@@ -94,7 +94,7 @@ func (r Respond) Success(data interface{}, msg ...string) {
 	return
 }
 
-func (r Respond) Error(message string, data ...interface{}) {
+func (r Response) Error(message string, data ...interface{}) {
 	r.Default.Status = 1
 	r.Default.Message = message
 	if len(data) > 0 {
@@ -110,6 +110,6 @@ func O(ctx iris.Context, errorCode uint16, message string, data interface{}) {
 	return
 }
 
-func NewRespond(ctx iris.Context) Respond {
-	return Respond{ctx: ctx}
+func NewRespond(ctx iris.Context) Response {
+	return Response{ctx: ctx}
 }

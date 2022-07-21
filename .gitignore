@@ -1,6 +1,7 @@
 /providers
 /main.go
 /resources/
+/resource/
 /http/
 /config/
 release/app.xml

@@ -19,19 +19,6 @@ type Config struct {
 		AllowedCross bool   `json:"allowed_cross" xml:"allowed-cross" name:"运行跨域"`
 	} `json:"app" xml:"app" name:"站点名称"`
 	
-	Wechat struct {
-		MiniProgram struct {
-			AppID     string `json:"app_id" xml:"app-id" name:"微信小程序APP_ID"`
-			AppSecret string `json:"app_secret" xml:"app-secret" name:"微信小程序App_Secret"`
-		} `json:"mini_program" xml:"mini-program" name:"微信小程序配置"`
-		OfficialAccount struct {
-			AppID          string `json:"app_id" xml:"app-id" name:"微信公众号APP_ID"`
-			AppSecret      string `json:"app_secret" xml:"app-secret" name:"微信公众号App_Secret"`
-			Token          string `json:"token" xml:"token" name:"验证令牌"`
-			EncodingAESKey string `json:"encoding_aes_key" xml:"encoding-aes-key" name:"开启AES加密"`
-		} `json:"official_account" xml:"official-account" name:"微信公众号配置"`
-	} `json:"wechat" xml:"wechat" name:"微信数据配置"`
-	
 	Log struct {
 		OutputToConsole bool   `json:"output_to_console" xml:"output-to-console" name:"日志是否输出到控制台"`
 		SaveToFile      bool   `json:"save_to_file" xml:"save-to-file" name:"是否存储日志"`

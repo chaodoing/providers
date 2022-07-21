@@ -3,20 +3,8 @@
     <app explain="站点配置">
         <host explain="监听主机">0.0.0.0</host>
         <port explain="监听端口">8080</port>
-        <allowed-cross explain="允许跨域">false</allowed-cross>
+        <cross explain="允许跨域">false</cross>
     </app>
-    <wechat explain="微信配置">
-        <mini-program explain="小程序配置">
-            <app-id explain="小程序ID">wx5c80efdd9f6520ad</app-id>
-            <app-secret explain="小程序密钥">e32c464f28fe4fd6692ba2d4869760fa</app-secret>
-        </mini-program>
-        <official-account explain="公众号配置">
-            <app-id explain="公众号ID"/>
-            <app-secret explain="公众号密钥"/>
-            <token/>
-            <encoding-aes-key explain="开启AES加密"/>
-        </official-account>
-    </wechat>
     <log explain="日志配置">
         <output-to-console explain="控制台输出">false</output-to-console>
         <save-to-file explain="是否保存到日志文件">false</save-to-file>

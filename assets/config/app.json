@@ -2,19 +2,7 @@
 	"app": {
 		"host": "127.0.0.1",
 		"port": 8080,
-		"allowed_cross": false
-	},
-	"wechat": {
-		"mini_program": {
-			"app_id": "",
-			"app_secret": ""
-		},
-		"official_account": {
-			"app_id": "",
-			"app_secret": "",
-			"token": "",
-			"encoding_aes_key": ""
-		}
+		"cross": false
 	},
 	"log": {
 		"console_on": true,

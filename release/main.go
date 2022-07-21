@@ -1,11 +1,11 @@
 package main
 
 import (
-	`os`
-	
-	`github.com/urfave/cli`
-	
-	`github.com/chaodoing/providers/console`
+	"os"
+
+	"github.com/urfave/cli"
+
+	"virtualization/providers/console"
 )
 
 var (
@@ -18,7 +18,7 @@ func main() {
 	os.Setenv("ENVIRONMENT", ENVIRONMENT)
 	os.Setenv("VERSION", VERSION)
 	os.Setenv("APP", NAME)
-	
+
 	app := cli.NewApp()
 	app.Name = NAME
 	app.Version = VERSION

@@ -1,20 +1,20 @@
 package containers
 
 import (
-	`errors`
-	`fmt`
-	`io`
-	Logger `log`
-	`os`
-	`strings`
-	`time`
-	
-	`github.com/go-redis/redis`
-	`github.com/lestrrat-go/strftime`
-	`github.com/natefinch/lumberjack`
-	`gorm.io/driver/mysql`
-	`gorm.io/gorm`
-	gromlogger `gorm.io/gorm/logger`
+	"errors"
+	"fmt"
+	"io"
+	Logger "log"
+	"os"
+	"strings"
+	"time"
+
+	"github.com/go-redis/redis"
+	"github.com/lestrrat-go/strftime"
+	"github.com/natefinch/lumberjack"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	gromlogger "gorm.io/gorm/logger"
 )
 
 type Provides map[string]interface{}
@@ -65,19 +65,19 @@ func (c *Container) Mysql() (db *gorm.DB, err error) {
 		return c.db, nil
 	}
 	_, schema := c.Config.dialect()
-	
+
 	var (
 		log      *lumberjack.Logger
 		Colorful bool
 		logx     gromlogger.Interface
 		out      io.Writer
 	)
-	
+
 	log, err = c.Logger(c.Get().Log.DbFile)
 	if err != nil {
 		return
 	}
-	
+
 	if c.Get().Log.OutputToConsole && c.Get().Log.OutputToConsole {
 		out = io.MultiWriter(os.Stdout, log)
 	} else if c.Get().Log.OutputToConsole {
@@ -102,7 +102,7 @@ func (c *Container) Mysql() (db *gorm.DB, err error) {
 		IgnoreRecordNotFoundError: false,
 		Colorful:                  Colorful,
 	})
-	
+
 	c.db, err = gorm.Open(mysql.Open(schema), &gorm.Config{
 		DryRun:      false,
 		PrepareStmt: true,
@@ -117,7 +117,8 @@ func (c *Container) Mysql() (db *gorm.DB, err error) {
 // Authorized 用户认证
 func (c *Container) Authorized() *Authorized {
 	return &Authorized{
-		rdx: c.rdx,
+		rdx:    c.rdx,
+		Expire: int64(c.Config.Redis.Expire),
 	}
 }
 
