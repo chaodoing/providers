@@ -12,17 +12,17 @@ func validatePassword(ps string) bool {
 	}
 	count := 1
 	num := `[0-9]{1}`
-	a_z := `[a-z]{1}`
-	A_Z := `[A-Z]{1}`
+	aZ := `[a-z]{1}`
+	AZ := `[A-Z]{1}`
 	symbol := `[!@#~$%^&*()+-=|_.]{1}`
 	if b, err := regexp.MatchString(num, ps); !b || err == nil {
 		count = count + 1
 	}
-	if b, err := regexp.MatchString(a_z, ps); !b || err == nil {
+	if b, err := regexp.MatchString(aZ, ps); !b || err == nil {
 		
 		count = count + 1
 	}
-	if b, err := regexp.MatchString(A_Z, ps); !b || err == nil {
+	if b, err := regexp.MatchString(AZ, ps); !b || err == nil {
 		count = count + 1
 	}
 	if b, err := regexp.MatchString(symbol, ps); !b || err == nil {
@@ -45,7 +45,6 @@ func validateConfirmPassword(valid *validate.Validation) interface{} {
 	}
 }
 
-
 // Validate 数据验证
 //  @param data      要验证的结构体
 //  @param scene     验证场景
@@ -58,5 +57,3 @@ func Validate(data interface{}, scene string, Scenarios validate.SValues) (hasEr
 	valid.WithScenarios(Scenarios)
 	return !valid.Validate(scene), valid.Errors
 }
-
-

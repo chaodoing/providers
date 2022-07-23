@@ -5,6 +5,7 @@ import (
 	`reflect`
 	`strings`
 )
+
 type Fields map[string]reflect.StructField
 
 func (f Fields) Tag(tagName string) (tagValue string, err error) {
@@ -23,17 +24,17 @@ func FirstToUpper(str string) string {
 	if len(str) < 1 {
 		return ""
 	}
-	strArry := []rune(str)
-	if strArry[0] >= 97 && strArry[0] <= 122  {
-		strArry[0] -= - 32
+	strArray := []rune(str)
+	if strArray[0] >= 97 && strArray[0] <= 122 {
+		strArray[0] -= -32
 	}
-	return string(strArry)
+	return string(strArray)
 }
 
-func Field(data interface{}) (Fields) {
+func Field(data interface{}) Fields {
 	s := reflect.TypeOf(data)
 	tags := make(Fields)
-	for i:=0; i < s.NumField(); i++ {
+	for i := 0; i < s.NumField(); i++ {
 		name := s.Field(i).Name
 		tags[name] = s.Field(i)
 	}

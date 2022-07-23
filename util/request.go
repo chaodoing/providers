@@ -28,7 +28,12 @@ func request(method, url, query string, headers ...map[string]string) (body stri
 	if err != nil {
 		return "", err
 	}
-	defer response.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(response.Body)
 	return string(Body), nil
 }
 
@@ -54,7 +59,12 @@ func GET(query string, headers ...map[string]string) (body string, err error) {
 	if err != nil {
 		return "", err
 	}
-	defer response.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(response.Body)
 	return string(Body), nil
 }
 
@@ -72,4 +82,3 @@ func PUT(query string, data string, headers ...map[string]string) (body string, 
 func DELETE(query string, data string, headers ...map[string]string) (body string, err error) {
 	return request("delete", query, data, headers...)
 }
-
