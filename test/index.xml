@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<root version="v1.0.0">
+<root location="" version="v1.0.0">
 	<app>
 		<host></host>
 		<port></port>
-		<allowed-cross>false</allowed-cross>
+		<cross>false</cross>
 	</app>
-	<wechat>
-		<mini-program>
-			<app-id></app-id>
-			<app-secret></app-secret>
-		</mini-program>
-		<official-account>
-			<app-id></app-id>
-			<app-secret></app-secret>
-			<token></token>
-			<encoding-aes-key></encoding-aes-key>
-		</official-account>
-	</wechat>
 	<log>
 		<console>false</console>
-		<on-save>false</on-save>
-		<level></level>
-		<db>false</db>
-		<db-level></db-level>
-		<db-file></db-file>
-		<iris-file></iris-file>
-		<err-file></err-file>
+		<is-save>false</is-save>
+		<iris>
+			<level></level>
+			<file></file>
+			<err-file></err-file>
+		</iris>
+		<database>
+			<enable>false</enable>
+			<level></level>
+			<file></file>
+		</database>
 	</log>
 	<database>
 		<drive></drive>
@@ -40,16 +32,20 @@
 		<host></host>
 		<port>0</port>
 		<auth></auth>
-		<db-index>0</db-index>
+		<index>0</index>
 		<expire>0</expire>
 	</redis>
 	<asset-bundle>
 		<template></template>
 		<favicon></favicon>
-		<static-uri></static-uri>
-		<static></static>
-		<upload-uri></upload-uri>
-		<upload></upload>
-		<upload-maximum>0</upload-maximum>
+		<static>
+			<uri></uri>
+			<path></path>
+		</static>
+		<upload>
+			<maximum>0</maximum>
+			<uri></uri>
+			<path></path>
+		</upload>
 	</asset-bundle>
 </root>

@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 	"time"
-
+	
 	"github.com/go-redis/redis"
 	"github.com/lestrrat-go/strftime"
 	"github.com/natefinch/lumberjack"
@@ -65,22 +65,22 @@ func (c *Container) Mysql() (db *gorm.DB, err error) {
 		return c.db, nil
 	}
 	_, schema := c.Config.dialect()
-
+	
 	var (
 		log      *lumberjack.Logger
 		Colorful bool
 		logx     gromlogger.Interface
 		out      io.Writer
 	)
-
-	log, err = c.Logger(c.Get().Log.DbFile)
+	
+	log, err = c.Logger(c.Get().Log.Database.File)
 	if err != nil {
 		return
 	}
-
-	if c.Get().Log.OutputToConsole && c.Get().Log.OutputToConsole {
+	
+	if c.Get().Log.Console && c.Get().Log.Console {
 		out = io.MultiWriter(os.Stdout, log)
-	} else if c.Get().Log.OutputToConsole {
+	} else if c.Get().Log.Console {
 		out = os.Stdout
 		Colorful = true
 	} else {
@@ -98,11 +98,13 @@ func (c *Container) Mysql() (db *gorm.DB, err error) {
 	}
 	logx = NewGormLog(Logger.New(out, "[GORM] ", flag), gromlogger.Config{
 		SlowThreshold:             200 * time.Millisecond,
-		LogLevel:                  gormLevel(c.Get().Log.GormLevel),
+		LogLevel:                  gormLevel(c.Get().Log.Database.Level),
 		IgnoreRecordNotFoundError: false,
 		Colorful:                  Colorful,
 	})
-
+	if !c.Get().Log.Database.Enable {
+		logx = nil
+	}
 	c.db, err = gorm.Open(mysql.Open(schema), &gorm.Config{
 		DryRun:      false,
 		PrepareStmt: true,

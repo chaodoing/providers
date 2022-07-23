@@ -1,42 +1,46 @@
 {
 	"app": {
-		"host": "127.0.0.1",
-		"port": 8080,
-		"cross": false
+		"host": "0.0.0.0",
+		"port": "80",
+		"cross": true
 	},
 	"log": {
-		"console_on": true,
-		"on_save": false,
-		"level": "info",
-		"db": true,
-		"db_level": "info",
-		"db_file": "${DIR}/log/mysql.log",
-		"iris_file": "${DIR}/log/app.log",
-		"err_file": "${DIR}/log/error.log"
+		"console": true,
+		"is_save": true,
+		"iris": {
+			"level": "",
+			"file": "",
+			"err_file": ""
+		},
+		"database": {
+			"enable": false,
+			"level": "",
+			"file": ""
+		}
 	},
 	"database": {
-		"drive": "mysql",
-		"host": "127.0.0.1",
-		"port": 3306,
-		"dbname": "airport",
-		"username": "root",
-		"password": "123.com",
-		"charset": "utf8mb4"
+		"drive": "",
+		"host": "",
+		"port": 0,
+		"dbname": "",
+		"username": "",
+		"password": "",
+		"charset": ""
 	},
 	"redis": {
-		"host": "127.0.0.1",
-		"port": 6379,
+		"host": "",
+		"port": 0,
 		"auth": "",
-		"db_index": 0,
+		"index": 0,
 		"expire": 0
 	},
 	"asset_bundle": {
-		"template": "${DIR}/resources/template/",
-		"favicon": "${DIR}/resources/template/favicon.ico",
-		"static_uri": "/static",
-		"static": "${DIR}/resources/template/static",
-		"upload_uri": "/upload",
-		"upload": "${DIR}/resources/upload",
-		"upload_maximum": 20
+		"template": "",
+		"favicon": "",
+		"static_uri": "",
+		"static": "",
+		"upload_uri": "",
+		"upload": "",
+		"upload_maximum": 0
 	}
 }

@@ -27,34 +27,32 @@ func Service(container *Container, Driver RouteDriver) {
 		err               error
 		DisableStartupLog bool
 		logger            *lumberjack.Logger
-		dim               *hero.Hero
 	)
-	logger, err = container.Logger(container.Get().Log.IrisFile)
+	logger, err = container.Logger(container.Get().Log.Iris.File)
 	if err != nil {
 		panic(err)
 		return
 	}
-	dim = hero.New()
-	dim.Register(container)
-	if container.Get().Log.OutputToConsole && container.Get().Log.OutputToConsole {
+	hero.Register(container)
+	if container.Get().Log.Console && container.Get().Log.Console {
 		app.Logger().SetOutput(logger)
 		app.Logger().AddOutput(os.Stdout)
 	}
 	
-	if !container.Get().Log.OutputToConsole && container.Get().Log.SaveToFile {
+	if !container.Get().Log.Console && container.Get().Log.IsSave {
 		app.Logger().SetOutput(logger)
 	}
-	if container.Get().Log.OutputToConsole && !container.Get().Log.SaveToFile {
+	if container.Get().Log.Console && !container.Get().Log.IsSave {
 		app.Logger().SetOutput(os.Stdout)
 	}
-	app.Logger().SetLevel(irisLevel(container.Get().Log.IrisLevel))
+	app.Logger().SetLevel(irisLevel(container.Get().Log.Iris.Level))
 	
 	if strings.EqualFold(os.Getenv("ENVIRONMENT"), "release") {
 		DisableStartupLog = true
 	}
-	if container.Get().App.AllowedCross {
+	if container.Get().App.Cross {
 		app.AllowMethods(iris.MethodOptions)
-		app.UseGlobal(middleware.AllowedCrossDomain)
+		app.UseGlobal(middleware.CrossAllowed)
 	}
 	
 	// Favicon 图标
@@ -66,22 +64,22 @@ func Service(container *Container, Driver RouteDriver) {
 		app.RegisterView(iris.HTML(os.ExpandEnv(container.Config.AssetBundle.Template), ".html"))
 	}
 	// 静态目录
-	if fsutil.PathExist(container.Config.AssetBundle.Static) {
-		app.HandleDir(container.Config.AssetBundle.StaticUri, os.ExpandEnv(container.Config.AssetBundle.Static))
+	if fsutil.PathExist(container.Config.AssetBundle.Static.Path) {
+		app.HandleDir(container.Config.AssetBundle.Static.Uri, os.ExpandEnv(container.Config.AssetBundle.Static.Path))
 	}
 	// 上传目录
-	if fsutil.PathExist(container.Config.AssetBundle.Upload) {
-		app.HandleDir(container.Config.AssetBundle.UploadUri, os.ExpandEnv(container.Config.AssetBundle.Upload))
+	if fsutil.PathExist(container.Config.AssetBundle.Upload.Path) {
+		app.HandleDir(container.Config.AssetBundle.Upload.Uri, os.ExpandEnv(container.Config.AssetBundle.Upload.Path))
 	} else {
-		if err := fsutil.Mkdir(os.ExpandEnv(container.Config.AssetBundle.Upload), 0755); err != nil {
+		if err := fsutil.Mkdir(os.ExpandEnv(container.Config.AssetBundle.Upload.Path), 0755); err != nil {
 			panic(err)
 		} else {
-			app.HandleDir(container.Config.AssetBundle.UploadUri, os.ExpandEnv(container.Config.AssetBundle.Upload))
+			app.HandleDir(container.Config.AssetBundle.Upload.Uri, os.ExpandEnv(container.Config.AssetBundle.Upload.Path))
 		}
 	}
-	Driver(app, container, dim)
+	Driver(app, container)
 	app.Configure(iris.WithConfiguration(iris.Configuration{
-		PostMaxMemory:       int64(container.Config.AssetBundle.UploadMaximum) << 20,
+		PostMaxMemory:       int64(container.Config.AssetBundle.Upload.Maximum) << 20,
 		TimeFormat:          "2006-01-02 15:04:05",
 		EnableOptimizations: true,
 		Charset:             "UTF-8",
