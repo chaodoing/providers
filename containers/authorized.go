@@ -18,7 +18,7 @@ import (
 const (
 	Basic  = "Basic "
 	Bearer = "Bearer "
-	Prefix = "MEMBERSTATE:"
+	Prefix = "providers:"
 )
 
 type Authorized struct {
