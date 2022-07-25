@@ -60,15 +60,16 @@ func Service(container *Container, Driver RouteDriver) {
 		app.Favicon(os.ExpandEnv(container.Config.AssetBundle.Favicon))
 	}
 	// 模板加载
-	if fsutil.PathExist(container.Config.AssetBundle.Template) {
+	if fsutil.PathExist(os.ExpandEnv(container.Config.AssetBundle.Template)) {
 		app.RegisterView(iris.HTML(os.ExpandEnv(container.Config.AssetBundle.Template), ".html"))
 	}
 	// 静态目录
-	if fsutil.PathExist(container.Config.AssetBundle.Static.Path) {
+	if fsutil.PathExist(os.ExpandEnv(container.Config.AssetBundle.Static.Path)) {
 		app.HandleDir(container.Config.AssetBundle.Static.Uri, os.ExpandEnv(container.Config.AssetBundle.Static.Path))
 	}
 	// 上传目录
-	if fsutil.PathExist(container.Config.AssetBundle.Upload.Path) {
+	
+	if fsutil.PathExist(os.ExpandEnv(container.Config.AssetBundle.Upload.Path)) {
 		app.HandleDir(container.Config.AssetBundle.Upload.Uri, os.ExpandEnv(container.Config.AssetBundle.Upload.Path))
 	} else {
 		if err := fsutil.Mkdir(os.ExpandEnv(container.Config.AssetBundle.Upload.Path), 0755); err != nil {
