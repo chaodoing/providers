@@ -68,7 +68,6 @@ func Service(container *Container, Driver RouteDriver) {
 		app.HandleDir(container.Config.AssetBundle.Static.Uri, os.ExpandEnv(container.Config.AssetBundle.Static.Path))
 	}
 	// 上传目录
-	
 	if fsutil.PathExist(os.ExpandEnv(container.Config.AssetBundle.Upload.Path)) {
 		app.HandleDir(container.Config.AssetBundle.Upload.Uri, os.ExpandEnv(container.Config.AssetBundle.Upload.Path))
 	} else {
