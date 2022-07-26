@@ -61,7 +61,8 @@ func Service(container *Container, Driver RouteDriver) {
 	}
 	// 模板加载
 	if fsutil.PathExist(os.ExpandEnv(container.Config.AssetBundle.Template)) {
-		app.RegisterView(iris.HTML(os.ExpandEnv(container.Config.AssetBundle.Template), ".html"))
+		// 如果是开发环境则每次加载都重新渲染模板
+		app.RegisterView(iris.HTML(os.ExpandEnv(container.Config.AssetBundle.Template), ".html").Reload(strings.HasPrefix(strings.ToLower(os.Getenv("ENVIRONMENT")), "dev")))
 	}
 	// 静态目录
 	if fsutil.PathExist(os.ExpandEnv(container.Config.AssetBundle.Static.Path)) {

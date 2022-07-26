@@ -43,6 +43,11 @@ func Query(ctx iris.Context) (query *PageQuery) {
 	return
 }
 
+// Params 获取请求查询参数
+func (query *PageQuery) Params() map[string]string {
+	return query.parameters
+}
+
 // Pagination 查找分页数据
 func (query *PageQuery) Pagination(db *gorm.DB, invoke Invoke) (pagination Pagination) {
 	pagination.Page = query.Page
