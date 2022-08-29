@@ -10,3 +10,4 @@ logs/
 /test/*.ini
 /test/*.xml
 .env
+release/*.service

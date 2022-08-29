@@ -4,7 +4,6 @@ import (
 	`github.com/urfave/cli`
 	
 	`github.com/chaodoing/providers/console/environment`
-	`github.com/chaodoing/providers/util`
 )
 
 var file string
@@ -29,6 +28,6 @@ var Config = cli.Command{
 		if err != nil {
 			panic(err)
 		}
-		return util.SaveXML(data, file)
+		return putil.SaveXML(data, file)
 	},
 }

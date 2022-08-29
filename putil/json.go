@@ -1,4 +1,4 @@
-package util
+package putil
 
 import (
 	`encoding/json`
@@ -22,7 +22,7 @@ func ReadJSON(file string, data interface{}) (err error) {
 
 // SaveJSON 写入JSON
 func SaveJSON(data interface{}, file string) error {
-	xmlByte, err := json.MarshalIndent(data, "","\t")
+	xmlByte, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
 		return err
 	}

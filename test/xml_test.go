@@ -3,8 +3,6 @@ package test
 import (
 	`encoding/xml`
 	`testing`
-	
-	`github.com/chaodoing/providers/util`
 )
 
 type (
@@ -54,7 +52,7 @@ func TestSaveXML(t *testing.T) {
 			},
 		},
 	}
-	err := util.SaveXML(data, "./index.xml")
+	err := putil.SaveXML(data, "./index.xml")
 	if err != nil {
 		t.Error(err)
 	}

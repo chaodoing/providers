@@ -1,4 +1,4 @@
-package vaildate
+package verification
 
 import (
 	`regexp`

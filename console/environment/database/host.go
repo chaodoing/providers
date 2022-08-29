@@ -6,8 +6,6 @@ import (
 	`strings`
 	
 	`github.com/manifoldco/promptui`
-	
-	`github.com/chaodoing/providers/util`
 )
 
 type Host struct {
@@ -21,7 +19,7 @@ func (h *Host) validate(input string) (err error) {
 	if strings.EqualFold(input, "") {
 		return errors.New("数据库连接IP不能为空")
 	}
-	if !util.ISIPv4(input) {
+	if !putil.ISIPv4(input) {
 		return errors.New("数据库连接IP格式不正确")
 	}
 	return nil
