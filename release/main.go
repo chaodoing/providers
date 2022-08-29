@@ -1,32 +1,24 @@
 package main
 
 import (
-	"os"
+	`fmt`
+	`os`
 	
-	"github.com/urfave/cli"
+	`github.com/urfave/cli`
 	
 	`github.com/chaodoing/providers/console`
 )
 
-var (
-	ENVIRONMENT = "development"
-	VERSION     = "v1.0.0"
-	NAME        = "wxamp"
-)
-
 func main() {
-	os.Setenv("ENVIRONMENT", ENVIRONMENT)
-	os.Setenv("VERSION", VERSION)
-	os.Setenv("APP", NAME)
-	
-	app := cli.NewApp()
-	app.Name = NAME
-	app.Version = VERSION
+	var app = cli.NewApp()
+	app.Description = "网站服务程序"
+	app.Usage = "网站服务程序"
 	app.Commands = []cli.Command{
 		console.Systemd,
 		console.Config,
+		console.Env,
 	}
 	if err := app.Run(os.Args); err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 }

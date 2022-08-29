@@ -1,2 +1,0 @@
-#!/usr/bin/env zsh
-go-bindata --pkg=assets service template config

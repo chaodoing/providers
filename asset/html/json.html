@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <link href="//unpkg.com/layui@2.7.6/dist/css/layui.css" rel="stylesheet">
+</head>
+<body>
+<script>
+    var sampleJson = JSON.parse({{.Json}});
+	var data = JSON.stringify(sampleJson, null, "   ");
+</script>
+<div class="layui-container">
+    <pre class="layui-code" lay-options="{title:'JSON'}"></pre>
+</div>
+
+<script src="//unpkg.com/layui@2.7.6/dist/layui.js"></script>
+<script>
+layui.use('code', function(){
+    layui.code();
+});
+document.querySelector('.layui-code').innerHTML = data;
+</script>
+</body>
+</html>

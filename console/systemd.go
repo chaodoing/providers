@@ -1,70 +1,48 @@
 package console
 
 import (
-	"html/template"
-	"os"
+	`bytes`
+	`html/template`
 	
-	"github.com/gookit/goutil/fsutil"
-	"github.com/urfave/cli"
+	`github.com/gookit/goutil/fsutil`
+	`github.com/urfave/cli`
 	
-	`github.com/chaodoing/providers/assets`
+	`github.com/chaodoing/providers/asset`
+	`github.com/chaodoing/providers/console/systemd`
 )
 
-var (
-	dir    string
-	exec   string
-	config string
-)
 var Systemd = cli.Command{
 	Name:        "systemd",
-	ShortName:   "sys",
+	ShortName:   "s",
 	Usage:       "生成Linux服务脚本",
 	Description: "生成Linux [.service] 格式服务脚本",
-	Category:    "框架命令",
+	Category:    "Frame",
 	Flags: []cli.Flag{
 		cli.StringFlag{
-			Name:        "dir,d",
-			Usage:       "程序工作路径",
-			Value:       os.Getenv("PWD"),
-			Destination: &dir,
-		},
-		cli.StringFlag{
-			Name:        "exec,e",
-			Usage:       "可运行程序所在路径",
-			Value:       os.Getenv("PWD") + "/bin/" + fsutil.Name(os.Args[0]),
-			Destination: &exec,
-		},
-		cli.StringFlag{
-			Name:        "config,c",
-			Usage:       "配置文件问位置",
-			Value:       os.ExpandEnv("${PWD}/config/app.xml"),
-			Destination: &config,
+			Name:        "file,f",
+			Usage:       "服务脚本输出位置",
+			Required:    true,
+			Value:       "./app.service",
+			Destination: &file,
 		},
 	},
-	Action: func(c *cli.Context) error {
-		var data = struct {
-			App     string
-			Path    string
-			Execute string
-			Config  string
-		}{
-			App:     os.Getenv("APP"),
-			Path:    dir,
-			Execute: exec,
-			Config:  config,
-		}
-		service, err := assets.Asset("service/app.service")
+	Action: func(c *cli.Context) (err error) {
+		var sys systemd.Systemd
+		sys, err = systemd.NewSystemd()
 		if err != nil {
-			return err
+			return
 		}
-		tpl, err := template.New("systemd").Parse(string(service))
+		content, err := asset.Asset("systemd/app.service")
 		if err != nil {
-			return err
+			return
 		}
-		err = tpl.Execute(os.Stdout, data)
+		tpl, err := template.New("systemd").Parse(string(content))
 		if err != nil {
-			return err
+			return
 		}
-		return nil
+		buf := new(bytes.Buffer)
+		err = tpl.Execute(buf, sys)
+		_, err = fsutil.PutContents(file, buf.String())
+		return
 	},
 }

@@ -4,7 +4,9 @@
 /resource/
 /http/
 /config/
-release/app.xml
-log/
+logs/
 .idea
 .DS_Store
+/test/*.ini
+/test/*.xml
+.env

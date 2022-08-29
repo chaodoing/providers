@@ -1,57 +1,34 @@
 package console
 
 import (
-	"fmt"
-	"os"
+	`github.com/urfave/cli`
 	
-	"github.com/urfave/cli"
-	
-	`github.com/chaodoing/providers/assets`
+	`github.com/chaodoing/providers/console/environment`
+	`github.com/chaodoing/providers/util`
 )
 
-var (
-	isXML  bool = true
-	isJSON bool = false
-)
+var file string
+
 var Config = cli.Command{
 	Name:        "config",
-	ShortName:   "conf",
-	Usage:       "默认配置文件生成",
-	Description: "生成默认的配置文件",
-	Category:    "框架命令",
+	ShortName:   "c",
+	Usage:       "生成Linux服务脚本",
+	Description: "生成Linux [.service] 格式服务脚本",
+	Category:    "Frame",
 	Flags: []cli.Flag{
-		cli.BoolFlag{
-			Name:        "xml",
-			Usage:       "生成xml配置文件",
-			FilePath:    "",
-			Required:    false,
-			Destination: &isXML,
-		},
-		cli.BoolFlag{
-			Name:        "json",
-			Usage:       "生成json配置文件",
-			FilePath:    "",
-			Required:    false,
-			Destination: &isJSON,
+		cli.StringFlag{
+			Name:        "file,f",
+			Usage:       "配置文件输出位置",
+			Required:    true,
+			Value:       "./config.xml",
+			Destination: &file,
 		},
 	},
-	Action: func(c *cli.Context) error {
-		var (
-			config []byte
-			err    error
-		)
-		if isXML {
-			config, err = assets.Asset("config/app.xml")
-		} else if isJSON {
-			config, err = assets.Asset("config/app.json")
-		} else {
-			config, err = assets.Asset("config/app.xml")
-		}
+	Action: func(c *cli.Context) (err error) {
+		data, err := environment.InitEnvironment()
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			panic(err)
 		}
-		fmt.Println(string(config))
-		return nil
+		return util.SaveXML(data, file)
 	},
 }
