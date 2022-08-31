@@ -16,6 +16,12 @@ User={{.Username}}
 Group={{.Group}}
 WorkingDirectory={{.Directory}}
 Environment=DIR={{.Directory}}
+#Environment=ENV=release
+#Environment=APP=
+#Environment=VERSION=v2.0.0
+# Environment=ENV1=value1
+# Environment=ENV2=value2
+# Environment=ENV3=value3
 ExecStart={{.Execute}}
 Restart=always
 

@@ -36,7 +36,7 @@ type Env struct {
 			Level  string `json:"level" xml:"level" ini:"Level"`    // Level 日志等级
 			File   string `json:"file" xml:"file" ini:"File"`       // File 数据库日志文件
 		} `json:"database" xml:"database" ini:"Log.Database"`
-	} `json:"log" xml:"log"`
+	} `json:"log" xml:"log" ini:"Log"`
 	
 	// Database 连接数据库
 	Database struct {

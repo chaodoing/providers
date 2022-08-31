@@ -46,6 +46,7 @@ func (b *bootstrap) Run() (err error) {
 	} else {
 		b.app.Logger().SetOutput(b.iris)
 	}
+	b.app.Logger().SetLevel(b.container.Log.Iris.Level)
 	if b.container.Listener.Cors {
 		b.app.AllowMethods(iris.MethodOptions)
 		b.app.UseGlobal(middleware.Cors)
@@ -77,7 +78,7 @@ func (b *bootstrap) Run() (err error) {
 		TimeFormat:          "2006-01-02 15:04:05",
 		EnableOptimizations: true,
 		Charset:             "UTF-8",
-		DisableStartupLog:   strings.HasPrefix(os.Getenv("ENV"), "dev"),
+		DisableStartupLog:   !strings.HasPrefix(os.Getenv("ENV"), "dev"),
 		Other: map[string]interface{}{
 			"routes": b.app.GetRoutes(),
 		},

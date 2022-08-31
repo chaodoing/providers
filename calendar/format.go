@@ -46,11 +46,11 @@ import (
 // 	%Z	the time zone name
 // 	%z	the time zone offset from UTC
 // 	%%	a '%'
-func Format(name string) (data string, err error) {
-	p, err := strftime.New(name)
+func Format(s string, date time.Time) (data string, err error) {
+	p, err := strftime.New(s)
 	if err != nil {
 		return
 	}
-	data = p.FormatString(time.Now())
+	data = p.FormatString(date)
 	return
 }

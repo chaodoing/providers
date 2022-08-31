@@ -4,14 +4,41 @@ import (
 	`fmt`
 	`os`
 	
+	`github.com/gookit/goutil/envutil`
 	`github.com/kataras/iris/v12`
 	`github.com/kataras/iris/v12/hero`
 	
 	`github.com/chaodoing/providers/containers`
+	`github.com/chaodoing/providers/http/controller`
+	`github.com/chaodoing/providers/http/middleware`
+)
+
+const (
+	// ENV     = "release"
+	ENV     = "development"
+	APP     = "providers"
+	VERSION = "v2.0.0"
 )
 
 func main() {
-	err := os.Setenv("DIR", os.ExpandEnv("${PWD}"))
+	var err error
+	err = os.Setenv("APP", envutil.Getenv("APP", APP))
+	if err != nil {
+		panic(err)
+		return
+	}
+	err = os.Setenv("ENV", envutil.Getenv("ENV", ENV))
+	if err != nil {
+		panic(err)
+		return
+	}
+	err = os.Setenv("VERSION", envutil.Getenv("VERSION", VERSION))
+	if err != nil {
+		panic(err)
+		return
+	}
+	
+	err = os.Setenv("DIR", os.ExpandEnv("${PWD}"))
 	if err != nil {
 		panic(err)
 	}
@@ -21,20 +48,8 @@ func main() {
 	}
 	
 	err = boot.Handle(func(app *iris.Application, container *containers.Container) {
-		app.Get(`/`, hero.Handler(func(ctx iris.Context, c containers.Container) {
-			db, err := c.Db()
-			if err != nil {
-				c.Error(ctx, 3306, "数据库连接失败")
-				return
-			}
-			var data map[string]interface{}
-			err = db.Table("users").Find(&data).Error
-			if err != nil {
-				c.Error(ctx, 204, "数据查询失败")
-				return
-			}
-			c.Success(ctx, data)
-		}))
+		app.Get(`/`, hero.Handler(middleware.Auth), hero.Handler(controller.Index))
+		app.Post(`/login`, hero.Handler(controller.Login))
 	}).Run()
 	if err != nil {
 		fmt.Println(err)

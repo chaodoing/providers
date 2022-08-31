@@ -138,3 +138,13 @@ func (c Container) Pagination(ctx iris.Context, pagination response.Pagination) 
 		ctx.Application().Logger().Error(err)
 	}
 }
+
+// Authorized 用户认证信息
+func (c Container) Authorized() (track Track, err error) {
+	var redisCli *redis.Client
+	redisCli, err = c.Cache()
+	if err != nil {
+		return
+	}
+	return Track{redisCli: redisCli}, nil
+}
