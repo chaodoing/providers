@@ -3,6 +3,8 @@ package test
 import (
 	`encoding/xml`
 	`testing`
+	
+	`github.com/chaodoing/providers/putil`
 )
 
 type (

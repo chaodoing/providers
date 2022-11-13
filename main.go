@@ -50,6 +50,7 @@ func main() {
 	err = boot.Handle(func(app *iris.Application, container *containers.Container) {
 		app.Get(`/`, hero.Handler(middleware.Auth), hero.Handler(controller.Index))
 		app.Post(`/login`, hero.Handler(controller.Login))
+		app.Put(`/update`, hero.Handler(middleware.Auth), hero.Handler(controller.Update))
 	}).Run()
 	if err != nil {
 		fmt.Println(err)

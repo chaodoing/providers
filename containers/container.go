@@ -1,24 +1,24 @@
 package containers
 
 import (
-	`errors`
-	`fmt`
-	`io`
-	`log`
-	`os`
-	`path`
-	`strings`
-	`time`
-	
-	`github.com/go-redis/redis`
-	`github.com/kataras/iris/v12`
-	`github.com/lestrrat-go/strftime`
-	`github.com/natefinch/lumberjack`
-	`gorm.io/driver/mysql`
-	`gorm.io/gorm`
-	`gorm.io/gorm/logger`
-	
-	`github.com/chaodoing/providers/response`
+	"errors"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"path"
+	"strings"
+	"time"
+
+	"github.com/go-redis/redis"
+	"github.com/kataras/iris/v12"
+	"github.com/lestrrat-go/strftime"
+	"github.com/natefinch/lumberjack"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+
+	"github.com/chaodoing/providers/response"
 )
 
 type Container struct {
@@ -28,8 +28,9 @@ type Container struct {
 }
 
 // logDriver 日志文件存储驱动
-//  @param string name 日志文件名称
-//  @param string directory 目录名称
+//
+//	@param string name 日志文件名称
+//	@param string directory 目录名称
 func (c Container) logDriver(name, directory string) (data *lumberjack.Logger, err error) {
 	var p *strftime.Strftime
 	p, err = strftime.New(path.Join(directory, name))
@@ -45,8 +46,9 @@ func (c Container) logDriver(name, directory string) (data *lumberjack.Logger, e
 }
 
 // Db 初始化数据库
-//  @return *gorm.DB db 数据库驱动
-//  @return error err 错误
+//
+//	@return *gorm.DB db 数据库驱动
+//	@return error err 错误
 func (c Container) Db() (db *gorm.DB, err error) {
 	if c.db != nil {
 		return c.db, nil
@@ -62,7 +64,7 @@ func (c Container) Db() (db *gorm.DB, err error) {
 	if err != nil {
 		return
 	}
-	
+
 	if c.Log.Console && c.Log.Record {
 		write = io.MultiWriter(logDrive, os.Stdout)
 	} else if c.Log.Console {
@@ -96,8 +98,9 @@ func (c Container) Db() (db *gorm.DB, err error) {
 }
 
 // Cache 缓存数据
-//  @return *redis.Client redisCli 缓存驱动
-//  @return error err 错误
+//
+//	@return *redis.Client redisCli 缓存驱动
+//	@return error err 错误
 func (c Container) Cache() (redisCli *redis.Client, err error) {
 	if c.redis != nil {
 		return c.redis, nil
@@ -113,6 +116,14 @@ func (c Container) Cache() (redisCli *redis.Client, err error) {
 		return
 	}
 	return c.redis, nil
+}
+
+// O 输出消息
+func (c Container) O(ctx iris.Context, Status uint32, message string, data interface{}) {
+	err := response.Responsive(ctx, nil).Data(Status, message, data).Send()
+	if err != nil {
+		ctx.Application().Logger().Error(err)
+	}
 }
 
 // Success 输出成功内容
@@ -146,5 +157,5 @@ func (c Container) Authorized() (track Track, err error) {
 	if err != nil {
 		return
 	}
-	return Track{redisCli: redisCli}, nil
+	return Track{redisCli: redisCli, TTL: time.Duration(c.Redis.TTL * uint64(time.Second))}, nil
 }

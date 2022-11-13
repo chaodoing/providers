@@ -1,13 +1,13 @@
 package request
 
 import (
-	`io`
-	`io/ioutil`
-	`net/http`
-	`strings`
+	"io"
+	"io/ioutil"
+	"net/http"
+	"strings"
 )
 
-// request 带数据的请求
+// request 带数据的请求y string,
 func request(method, url, query string, headers ...map[string]string) (body string, err error) {
 	var data io.Reader = strings.NewReader(query)
 	request, err := http.NewRequest(strings.ToUpper(method), url, data)
@@ -24,7 +24,7 @@ func request(method, url, query string, headers ...map[string]string) (body stri
 		return "", err
 	}
 	var Body []byte
-	Body, err = ioutil.ReadAll(response.Body)
+	Body, err = io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}

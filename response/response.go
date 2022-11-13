@@ -1,13 +1,13 @@
 package response
 
 import (
-	`bytes`
-	`encoding/json`
-	`html/template`
-	
-	`github.com/kataras/iris/v12`
-	
-	`github.com/chaodoing/providers/asset`
+	"bytes"
+	"encoding/json"
+	"html/template"
+
+	"github.com/kataras/iris/v12"
+
+	"github.com/chaodoing/providers/asset"
 )
 
 type Response struct {
@@ -22,7 +22,7 @@ func (r Response) JsonHtml(title string) (content string, err error) {
 	if err != nil {
 		return
 	}
-	
+
 	tpl, err := template.New("json").Parse(string(bit))
 	if err != nil {
 		return
@@ -60,6 +60,15 @@ func (r Response) Send() (err error) {
 	r.ctx.Negotiation().JSON(r.data).XML(r.data).HTML(html).EncodingGzip()
 	_, err = r.ctx.Negotiate(nil)
 	return
+}
+
+func (r Response) Data(status uint32, message string, data interface{}) Response {
+	r.data = Data{
+		Status:  status,
+		Message: message,
+		Data:    data,
+	}
+	return r
 }
 
 // Success 输出成功内容
