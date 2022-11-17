@@ -1,13 +1,13 @@
 package containers
 
 import (
-	`encoding/json`
-	`encoding/xml`
-	`fmt`
-	`os`
-	`strings`
-	
-	`github.com/go-ini/ini`
+	"encoding/json"
+	"encoding/xml"
+	"fmt"
+	"os"
+	"strings"
+
+	"github.com/go-ini/ini"
 )
 
 // Env 配置内容
@@ -37,7 +37,7 @@ type Env struct {
 			File   string `json:"file" xml:"file" ini:"File"`       // File 数据库日志文件
 		} `json:"database" xml:"database" ini:"Log.Database"`
 	} `json:"log" xml:"log" ini:"Log"`
-	
+
 	// Database 连接数据库
 	Database struct {
 		Drive    string `json:"drive" xml:"drive" ini:"Drive"`          // Drive 数据库类型
@@ -56,12 +56,16 @@ type Env struct {
 		Password string `json:"password" xml:"password" ini:"Password"` // Password 连接密码
 		TTL      uint64 `json:"ttl" xml:"ttl" ini:"TTL"`                // TTL 缓存时长
 	} `json:"redis" xml:"redis" ini:"Redis"`
-	
+
 	// Resource 资源文件配置
 	Resource struct {
 		Favicon string `json:"favicon" xml:"favicon" ini:"Favicon"` // Favicon 网站图标配置
 		// Template 模板目录配置
 		Template struct {
+			Delimit struct {
+				Left  string `json:"left" xml:"left" ini:"Left"`    // Left 左边变量分隔符号
+				Right string `json:"right" xml:"right" ini:"Right"` // Right 右边变量分隔符号
+			} `json:"delimit" xml:"delimit" ini:"Delimit"` // Delimit 变量边界符号
 			Directory string `json:"directory" xml:"directory" ini:"Directory"` // Directory 模板目录位置
 			Extension string `json:"extension" xml:"extension" ini:"Extension"` // Extension 模板文件扩展名称
 			Reload    bool   `json:"reload" xml:"reload" ini:"Reload"`          // Reload 每次都重新加载模板
@@ -104,6 +108,7 @@ func (c *Env) parseDirectory() *Env {
 }
 
 // dialect 转换数据配置
+//
 //	@return dialect=mysql
 //	@return schema=root:123.com@tcp(127.0.0.1:3306)/arrangement?charset=utf8mb4&parseTime=True&loc=Local
 //	@return logMode=false

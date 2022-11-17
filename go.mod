@@ -3,11 +3,14 @@ module github.com/chaodoing/providers
 go 1.17
 
 require (
+	github.com/go-ini/ini v1.67.0
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/google/uuid v1.3.0
 	github.com/gookit/goutil v0.5.10
-	github.com/gookit/validate v1.3.1
+	github.com/gookit/validate v1.4.4
 	github.com/kataras/iris/v12 v12.1.8
 	github.com/lestrrat-go/strftime v1.0.5
+	github.com/manifoldco/promptui v0.9.0
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/urfave/cli v1.22.5
 	gorm.io/driver/mysql v1.3.2
@@ -26,11 +29,9 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d // indirect
 	github.com/eknkc/amber v0.0.0-20171010120322-cdade1c07385 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
-	github.com/go-ini/ini v1.67.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
-	github.com/google/uuid v1.3.0 // indirect
-	github.com/gookit/filter v1.1.2 // indirect
+	github.com/gookit/filter v1.1.3 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/imkira/go-interpol v1.1.0 // indirect
 	github.com/iris-contrib/blackfriday v2.0.0+incompatible // indirect
@@ -45,10 +46,8 @@ require (
 	github.com/kataras/sitemap v0.0.5 // indirect
 	github.com/klauspost/compress v1.15.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/manifoldco/promptui v0.9.0 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.19 // indirect
-	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/moul/http2curl v1.0.0 // indirect

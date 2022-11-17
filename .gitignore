@@ -1,5 +1,5 @@
 /providers
-/main.go
+main.go
 /resources/
 /resource/
 /http/

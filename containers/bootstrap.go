@@ -1,19 +1,19 @@
 package containers
 
 import (
-	`fmt`
-	`log`
-	`net/http`
-	`os`
-	`strings`
-	`time`
-	
-	`github.com/gookit/goutil/fsutil`
-	`github.com/kataras/iris/v12`
-	`github.com/kataras/iris/v12/hero`
-	`github.com/natefinch/lumberjack`
-	
-	`github.com/chaodoing/providers/middleware`
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+	"time"
+
+	"github.com/gookit/goutil/fsutil"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/hero"
+	"github.com/natefinch/lumberjack"
+
+	"github.com/chaodoing/providers/middleware"
 )
 
 type bootstrap struct {
@@ -56,13 +56,13 @@ func (b *bootstrap) Run() (err error) {
 	}
 	// 模板加载
 	if fsutil.PathExist(b.container.Resource.Template.Directory) {
-		b.app.RegisterView(iris.HTML(b.container.Resource.Template.Directory, b.container.Resource.Template.Extension))
+		b.app.RegisterView(iris.HTML(b.container.Resource.Template.Directory, b.container.Resource.Template.Extension).Delims(b.container.Resource.Template.Delimit.Left, b.container.Resource.Template.Delimit.Right))
 	}
 	// 静态目录
 	if fsutil.PathExist(b.container.Resource.Asset.Directory) {
 		b.app.HandleDir(b.container.Resource.Asset.Url, b.container.Resource.Asset.Directory)
 	}
-	
+
 	// 上传目录
 	if fsutil.PathExist(b.container.Resource.Upload.Directory) {
 		b.app.HandleDir(b.container.Resource.Asset.Url, b.container.Resource.Asset.Directory)
