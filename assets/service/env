@@ -1,0 +1,84 @@
+;;; 监听站点
+[Station]
+; 监听主机
+Host = 127.0.0.1
+; 监听端口
+Port = 8000
+; 允许跨域
+AllowCrossDomain = on
+
+;;; 日志配置
+[Log]
+; 输出到控制台
+Stdout    = off
+; 记录到日志文件
+Record    = on
+; 日志存储目录
+Directory = ${DIR}/logs
+
+;;; 数据库配置
+[Database]
+; 连接主机
+Host = 127.0.0.1
+; 连接端口
+Port = 3306
+; 数据库名称
+Db   = test
+; 连接用户名
+Username = root
+; 连接密码
+Password = 123.com
+; 连接字符集
+Charset  = utf8mb4
+; 记录到日志文件
+Record   = mysql-%Y-%m-%d.log
+; 数据库日志等级 1:silent 2:error 3:warn 4:info
+Level = 4
+
+;;; Redis配置
+[Redis]
+; 连接主机
+Host = 127.0.0.1
+; 连接端口
+Port = 3306
+; 数据库索引 default [0-15]
+Db   = 0
+; 连接密码
+Auth =
+; 默认缓存时长[秒]
+TTL = 6480000
+
+;;; 模板目录配置
+[Template]
+; 模板目录位置
+Directory = ${DIR}/resources/template
+; 模板文件扩展名称
+Extension = .html
+; 每次访问都重新加载模板
+Reload    = true
+
+;;; 模板变量边界符号
+[Template.Delimit]
+; 左边变量分隔符号
+Left  = {%
+; 右边变量分隔符号
+Right = %}
+
+
+;;; Static 静态资源文件配置
+[Static]
+; 网站图标
+Favicon   = ${DIR}/resources/template/favicon.ico
+; 访问地址
+Url       = /static
+; 实际存储位置
+Directory = ${DIR}/resource/template/static
+
+;;; 上传配置
+[Upload]
+; 允许上传的文件最大大小 单位 MB
+Maximum = 20
+; 上传访问路径
+Url = /upload
+; 上传目录实际位置
+Directory = ${DIR}/resources/upload

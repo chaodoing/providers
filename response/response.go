@@ -1,13 +1,13 @@
 package response
 
 import (
-	"bytes"
-	"encoding/json"
-	"html/template"
-
-	"github.com/kataras/iris/v12"
-
-	"github.com/chaodoing/providers/asset"
+	`bytes`
+	`encoding/json`
+	`errors`
+	`github.com/chaodoing/providers/assets`
+	`github.com/kataras/iris/v12`
+	`html/template`
+	`log`
 )
 
 type Response struct {
@@ -15,26 +15,25 @@ type Response struct {
 	data interface{}
 }
 
-// JsonHtml 数据转换为HTML内容
-func (r Response) JsonHtml(title string) (content string, err error) {
-	var bit []byte
-	bit, err = asset.Asset("html/json.html")
+// renderHTML 渲染成html
+func (r Response) renderHTML() (html string, err error) {
+	var data []byte
+	data, err = assets.Asset("code/index.html")
 	if err != nil {
 		return
 	}
-
-	tpl, err := template.New("json").Parse(string(bit))
+	tpl, err := template.New("json").Parse(string(data))
 	if err != nil {
 		return
 	}
-	bit, err = json.Marshal(r.data)
+	data, err = json.Marshal(r.data)
 	if err != nil {
 		return
 	}
 	buf := new(bytes.Buffer)
 	err = tpl.Execute(buf, map[string]string{
-		"Title": title,
-		"Json":  string(bit),
+		"Title": "JSON",
+		"Json":  string(data),
 	})
 	return buf.String(), err
 }
@@ -51,17 +50,6 @@ func (r Response) Json() error {
 	return err
 }
 
-func (r Response) Send() (err error) {
-	html, err := r.JsonHtml("JSON")
-	if err != nil {
-		return err
-	}
-	r.ctx.Gzip(true)
-	r.ctx.Negotiation().JSON(r.data).XML(r.data).HTML(html).EncodingGzip()
-	_, err = r.ctx.Negotiate(nil)
-	return
-}
-
 func (r Response) Data(status uint32, message string, data interface{}) Response {
 	r.data = Data{
 		Status:  status,
@@ -71,36 +59,53 @@ func (r Response) Data(status uint32, message string, data interface{}) Response
 	return r
 }
 
-// Success 输出成功内容
-func (r Response) Success() (err error) {
-	r.data = Data{
-		Status:  0,
-		Message: "OK",
-		Data:    r.data,
+// Send 发送数据
+func (r Response) Send() (err error) {
+	if r.data == nil {
+		return errors.New("输出的数据不能为空")
 	}
-	return r.Send()
+	html, err := r.renderHTML()
+	if err != nil {
+		return err
+	}
+	r.ctx.Gzip(true)
+	r.ctx.Negotiation().JSON(r.data).XML(r.data).HTML(html).EncodingGzip()
+	_, err = r.ctx.Negotiate(nil)
+	return
 }
 
-// Error 输出错误内容
-func (r Response) Error(status uint32, message string) (err error) {
-	r.data = Data{
+func (r Response) Set(ctx iris.Context, data interface{}) {
+	r.ctx = ctx
+	r.data = data
+	err := r.Send()
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+// O 输出内容
+func (r Response) O(ctx iris.Context, status uint32, message string, data interface{}) {
+	r.ctx = ctx
+	err := r.Data(status, message, data).Send()
+	if err != nil {
+		log.Println(err)
+	}
+	
+}
+
+// Pagination 输出分页内容
+func (r Response) Pagination(ctx iris.Context, status uint32, message string, data interface{}, total uint64, page uint, limit uint) {
+	r.ctx = ctx
+	r.data = Pagination{
 		Status:  status,
 		Message: message,
-		Data:    r.data,
+		Total:   total,
+		Page:    page,
+		Limit:   limit,
+		Data:    data,
 	}
-	return r.Send()
-}
-
-// Pagination 分页内容输出
-func (r Response) Pagination(data Pagination) (err error) {
-	r.data = data
-	return r.Send()
-}
-
-// Responsive 响应器实例化
-func Responsive(ctx iris.Context, data interface{}) (response Response) {
-	return Response{
-		ctx:  ctx,
-		data: data,
+	err := r.Send()
+	if err != nil {
+		log.Println(err)
 	}
 }

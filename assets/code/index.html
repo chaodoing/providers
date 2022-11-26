@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <script>
+        var sampleJson = JSON.parse({{.Json}});
+        var data = JSON.stringify(sampleJson, null, "\t");
+    </script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        #layui-code {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<div id="layui-code"></div>
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
+<script src="https://unpkg.com/layui@2.7.6/dist/layui.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"></script>
+<script>
+    require.config({
+        paths: { vs: 'https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.34.1/min/vs/' },
+        'vs/nls': {availableLanguages: {'*':'zh-cn'}},
+    });
+    window.MonacoEnvironment = {
+        getWorkerUrl: function (workerId, label) {
+            return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+            self.MonacoEnvironment = {
+              baseUrl: 'https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.34.1/min'
+            };
+            importScripts('https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.34.1/min/vs/base/worker/workerMain.min.js');`)}`;
+        },
+    };
+    require(['vs/editor/editor.main'], function () {
+        window.monaco.editor.create(document.querySelector("#layui-code"), {
+            value: data,
+            language: 'json',
+            theme:'vs-dark',
+            fontSize: '14px',
+            lineNumbers: 'on',
+            roundedSelection: false,
+            scrollBeyondLastLine: false,
+            readOnly: false,
+            tabSize: 4,
+        });
+    });
+    window.addEventListener('resize', event => {
+        window.location.reload()
+    })
+</script>
+</html>

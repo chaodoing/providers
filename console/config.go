@@ -1,10 +1,8 @@
 package console
 
 import (
+	`github.com/chaodoing/providers/o`
 	`github.com/urfave/cli`
-	
-	`github.com/chaodoing/providers/console/environment`
-	`github.com/chaodoing/providers/putil`
 )
 
 var file string
@@ -25,10 +23,6 @@ var Config = cli.Command{
 		},
 	},
 	Action: func(c *cli.Context) (err error) {
-		data, err := environment.InitEnvironment()
-		if err != nil {
-			panic(err)
-		}
-		return putil.SaveXML(data, file)
+		return o.SaveXML(Configuration, file)
 	},
 }

@@ -2,13 +2,11 @@ package console
 
 import (
 	`bytes`
-	`html/template`
-	
+	`github.com/chaodoing/providers/assets`
+	`github.com/chaodoing/providers/console/systemd`
 	`github.com/gookit/goutil/fsutil`
 	`github.com/urfave/cli`
-	
-	`github.com/chaodoing/providers/asset`
-	`github.com/chaodoing/providers/console/systemd`
+	`html/template`
 )
 
 var Systemd = cli.Command{
@@ -32,7 +30,7 @@ var Systemd = cli.Command{
 		if err != nil {
 			return
 		}
-		content, err := asset.Asset("systemd/app.service")
+		content, err := assets.Asset("service/app.service")
 		if err != nil {
 			return
 		}

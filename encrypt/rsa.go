@@ -11,8 +11,7 @@ import (
 	`fmt`
 )
 
-type RSA struct {
-}
+type RSA struct{}
 
 // GenRsaKey RSA公钥私钥产生
 func (RSA) GenRsaKey() (prvkey, pubkey []byte) {
